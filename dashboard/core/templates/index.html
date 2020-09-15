@@ -1,0 +1,125 @@
+{% extends "board.html" %}
+
+
+{% block container %}
+<!-- Icon Cards-->
+    <div class="row">
+      <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-success o-hidden h-100">
+          <div class="card-body">
+            <div class="card-body-icon">
+              <i class="fas fa-fw fa-meteor"></i>
+            </div>
+            <div class="mr-5"><b>{{ n_nodes }}</b> Nodes</div>
+          </div>
+          <a class="card-footer text-white clearfix small z-1" href="#">
+            <span class="float-left">View Details</span>
+            <span class="float-right">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-warning o-hidden h-100">
+          <div class="card-body">
+            <div class="card-body-icon">
+              <i class="fas fa-fw fa-cube"></i>
+            </div>
+            <div class="mr-5"><b>{{ n_blocks }}</b> Blocks</div>
+          </div>
+          <a class="card-footer text-white clearfix small z-1" href="#">
+            <span class="float-left">View Details</span>
+            <span class="float-right">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-primary o-hidden h-100">
+          <div class="card-body">
+            <div class="card-body-icon">
+              <i class="fas fa-fw fa-list"></i>
+            </div>
+            <div class="mr-5"><b>{{ n_tx }}</b> Transactions</div>
+          </div>
+          <a class="card-footer text-white clearfix small z-1" href="#">
+            <span class="float-left">View Details</span>
+            <span class="float-right">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-danger o-hidden h-100">
+          <div class="card-body">
+            <div class="card-body-icon">
+              <i class="fas fa-fw fa-comments"></i>
+            </div>
+            <div class="mr-5"><b>{{ n_msg }}</b> Messages</div>
+          </div>
+          <a class="card-footer text-white clearfix small z-1" href="#">
+            <span class="float-left">View Details</span>
+            <span class="float-right">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- DataTables For Block -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fas fa-table"></i>
+        Blocks Table
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="block_dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Block Name</th>
+                <th>Protocol ID</th>
+                <th>Block Hash</th>
+                <th>Index</th>
+                <th>Prev Block Hash</th>
+                <th>Nb Tx</th>
+                <th>Nb Msg</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Block Name</th>
+                <th>Protocol ID</th>
+                <th>Block Hash</th>
+                <th>Index</th>
+                <th>Prev Block Hash</th>
+                <th>Nb Tx</th>
+                <th>Nb Msg</th>
+              </tr>
+            </tfoot>
+            <tbody>
+            {% for oblock in blocks %}
+              <tr>
+                <td><a href="/timeline/block/{{oblock.id}}">{{ oblock.name }}</a></td>
+                <td>{{ oblock.instance_id }}</td>
+                <td>{{ oblock.messages.all.first.value|truncatechars:30 }}</td>
+                <td>{{ oblock.headers.all.first.index }}</td>
+                <td>{{ oblock.headers.all.first.prev_block_hash|truncatechars:30 }}</td>
+                <td>{{ oblock.transactions.count }}</td>
+                <td>{{ oblock.messages.count }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer small text-muted">
+        Atos
+      </div>
+    </div>
+
+{% endblock %}

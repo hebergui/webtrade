@@ -1,0 +1,67 @@
+import random
+import statistics
+
+from core.models import *
+from django.contrib.auth import login, authenticate
+# from django.db.models import Count
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.views import View
+
+
+class Login(View):
+    template = 'login.html'
+
+    def get(self, request):
+        form = AuthenticationForm()
+        return render(request, self.template, {'form': form})
+
+    def post(self, request):
+        form = AuthenticationForm(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            return render(request, self.template, {'form': form})
+
+
+class Index(LoginRequiredMixin, View):
+    template = 'index.html'
+    login_url = '/login/'
+
+    def get(self, request):
+        blocks = Block.objects.all()
+        n_blocks = blocks.count()
+        companies = Company.objects.all()
+        n_companies = companies.count()
+
+        json = {
+            'blocks': blocks,
+            'n_blocks': n_blocks,
+            'companies': companies,
+            'n_companies': n_companies,
+        }
+        return render(request, self.template, json)
+
+
+class Hello(LoginRequiredMixin, View):
+    template = 'hello/index.html'
+    json = {}
+
+    def get(self, request, clazz=None, oid=None):
+        if clazz == 'block':
+            block = Block.objects.get(id=oid)
+            self.template = 'timelines/block.html'
+            self.json = {'clazz': clazz, 'oid': oid, 'oblock': block}
+
+        else:
+            self.template = 'hello/index.html'
+            #blocks = Block.objects.all().values_list('id', 'name')
+            self.json = {'clazz': clazz, 'oid': oid}
+
+        return render(request, self.template, self.json)
