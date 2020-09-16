@@ -45,3 +45,30 @@ def get_max(list):
 @register.filter
 def get_abs(a):
     return abs(a)
+
+@register.filter
+def antepenultimate(qs, attr):
+    obj = None
+    if qs.count() >= 2:
+        obj = qs.order_by('-id')[1]
+    else:
+        return None
+
+    if attr:
+        return getattr(obj, attr)
+    else:
+        return obj
+
+
+@register.filter
+def ultimate(qs, attr):
+    obj = None
+    if qs.count() >= 2:
+        obj = qs.order_by('-id')[0]
+    else:
+        return None
+
+    if attr:
+        return getattr(obj, attr)
+    else:
+        return obj

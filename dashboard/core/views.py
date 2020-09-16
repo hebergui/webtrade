@@ -1,6 +1,3 @@
-import random
-import statistics
-
 from core.models import *
 from django.contrib.auth import login, authenticate
 # from django.db.models import Count
@@ -35,18 +32,28 @@ class Index(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request):
-        blocks = Block.objects.all()
-        n_blocks = blocks.count()
         companies = Company.objects.all()
         n_companies = companies.count()
 
         json = {
-            'blocks': blocks,
-            'n_blocks': n_blocks,
             'companies': companies,
             'n_companies': n_companies,
         }
         return render(request, self.template, json)
+
+    def post(self, request):
+        pull()
+
+        companies = Company.objects.all()
+        n_companies = companies.count()
+
+        json = {
+            'companies': companies,
+            'n_companies': n_companies,
+        }
+
+        render(request, self.template, json)
+
 
 
 class Hello(LoginRequiredMixin, View):

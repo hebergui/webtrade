@@ -52,10 +52,14 @@ class CompanySerializer(serializers.ModelSerializer):
         else:
             company = Company.objects.create(**validated_data)
 
-        # children creation : indicators
-        #FIXME : check if indicator does not already exist (filter on composite keys ?)
+        # children creation : indicator creation only if indicator does not already exist
         for indicator_data in indicators_data:
-            Indicator.objects.create(company=company, **indicator_data)
+            indicator = None
+            indicators_in_db = company.indicators.filter(pub_date=indicator_data['pub_date'])
+            if len(indicators_in_db) == 1:
+                indicator = indicators_in_db[0]
+            else:
+                indicator = Indicator.objects.create(company=company, **indicator_data)
 
         return company
 
