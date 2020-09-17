@@ -1,6 +1,10 @@
 from django.db import models
+from django.http import JsonResponse
 from lxml import html
 import requests
+import time
+import httpx
+import asyncio
 
 #########
 #EMPLOYEE

@@ -63,7 +63,7 @@ def antepenultimate(qs, attr):
 @register.filter
 def ultimate(qs, attr):
     obj = None
-    if qs.count() >= 2:
+    if qs.count() >= 1:
         obj = qs.order_by('-id')[0]
     else:
         return None
