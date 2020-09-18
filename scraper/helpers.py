@@ -36,50 +36,51 @@ def download_data(name, indice, ref, url_ref):
         'forceRel': 'on',
         'maj': ''
     }
-    r_post = httpx.post(url_ref + ref, data=data)
-    r_get = httpx.get(url_ref + ref)
+    response = httpx.post(url_ref + ref, data=data, timeout=None)
 
     # Parsing part
     try:
-        txt_post = r_post.text
+        txt = response.text
 
         # dict format : db["pub_date"] = [pub_date, force, cmin, cmax, copen, cclose, mm30, phase]
         histo = {}
 
         # Parse post response
-        chart1 = txt_post.split("'Force Relative'],\n")[1].split(');')[0]
+        chart1 = txt.split("'Force Relative'],\n")[1].split(');')[0]
         data_chart1 = eval('['+chart1)
         for pub_date, force in data_chart1:
             histo[pub_date] = [pub_date, force]
 
-        chart2 = txt_post.split('var dataC = google.visualization.arrayToDataTable(')[1].split('\n')[0].split(', true')[0]
+        chart2 = txt.split('var dataC = google.visualization.arrayToDataTable(')[1].split('\n')[0].split(', true')[0]
         data_chart2 = eval(chart2)
         for pub_date, cmin, cmax, copen, cclose, mm30 in data_chart2:
             if pub_date not in histo:
                 histo[pub_date] = []
             histo[pub_date] += [cmin, cmax, copen, cclose, mm30, 'N/C']
 
-        # Parse get response
-        txt_get = r_get.text
-        tree = html.fromstring(txt_get)
+        tree = html.fromstring(txt)
 
         pub_date = 'N/C'
-        tmp = tree.xpath('/html/body/div/div/main/div[4]/ul/li[2]/text()')[0]
+        #tmp = tree.xpath('/html/body/div/div/main/div[4]/ul/li[2]/text()')[0]
+        tmp = tree.xpath('/html/body/div/div/main/div[5]/ul/li[2]/text()')[0]
         if tmp.find('Cours') != -1:
             pub_date = tmp.split('  au ')[1].split(' : ')[0]
             #11/09/2020 to 11/09/20
             pub_date = pub_date[0:6] + pub_date[-2:]
 
-        sector = tree.xpath('/html/body/div/div/main/div[4]/ul/li[4]/a/text()')
+        #sector = tree.xpath('/html/body/div/div/main/div[4]/ul/li[4]/a/text()')
+        sector = tree.xpath('/html/body/div/div/main/div[5]/ul/li[4]/a/text()')
         if len(sector) == 0:
-            sector = tree.xpath('/html/body/div/div/main/div[4]/ul/li[4]/em/text()')
+            #sector = tree.xpath('/html/body/div/div/main/div[4]/ul/li[4]/em/text()')
+            sector = tree.xpath('/html/body/div/div/main/div[5]/ul/li[4]/em/text()')
         sector = sector[0]
 
         #should be the same in histo
         #force = float(tree.xpath('/html/body/div/div/main/div[4]/ul/li[5]/text()')[0].split(' : ')[1])
 
         phase = 'N/C'
-        tmp = tree.xpath('/html/body/div/div/main/div[4]/ul/li[6]/text()')[0]
+        #tmp = tree.xpath('/html/body/div/div/main/div[4]/ul/li[6]/text()')[0]
+        tmp = tree.xpath('/html/body/div/div/main/div[5]/ul/li[6]/text()')[0]
         if tmp.find('Phase') != -1:
             phase = tmp.split(' : ')[1].split(' (')[0]
 
