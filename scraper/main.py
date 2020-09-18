@@ -4,8 +4,8 @@ import asyncio
 from lxml import html
 
 async def pull_async():
-    #url = 'https://screener.blogbourse.net/societes.html'
-    #r = httpx.get(url)
+    url = 'https://screener.blogbourse.net/societes.html'
+    r = httpx.get(url)
     tree = html.fromstring(r.text)
 
     # format : [id, name, indice, id, name, indice...]
@@ -20,7 +20,7 @@ async def pull_async():
     companies = [companies[x] + [str(tab2[x])] for x in range(0, len(tab2))]
 
     url = "https://screener.blogbourse.net/"
-     "companies = [['total', 'cac40', 'cours-total.html'], ['safran', 'cac40', 'cours-safran.html']]
+    #companies = [['total', 'cac40', 'cours-total.html'], ['safran', 'cac40', 'cours-safran.html']]
 
     for name, indice, ref in companies:
         client = httpx.AsyncClient()
@@ -53,7 +53,8 @@ async def pull_async():
             ]
         }
 
-        responses = await asyncio.gather(*[client.post('http://127.0.0.1:8000/api/companies/', json=js)])
+        #responses = await asyncio.gather(*[client.post('http://127.0.0.1:8000/api/companies/', json=js)])
+        responses = await asyncio.gather(*[client.post('http://35.224.98.28:8000/api/companies/', json=js)])
 
         for r in responses:
             print(name, ' : ', r.status_code)
