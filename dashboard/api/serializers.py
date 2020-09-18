@@ -11,13 +11,16 @@ class IndicatorSerializer(serializers.ModelSerializer):
     # Indicator :               #
     # - pub_date       : string #
     # - force          : float  #
+    # - cmin           : float  #
+    # - cmax           : float  #
+    # - copen          : float  #
+    # - cclose         : float  #
+    # - mm30           : float  #
     # - phase          : string #
-    # - indicators     : fk     #
-    #############################
     class Meta:
         model = Indicator
         #fields = '__all__'
-        fields = ['url', 'pub_date', 'force', 'phase']
+        fields = ['url', 'pub_date', 'force', 'cmin', 'cmax', 'copen', 'cclose', 'mm30', 'phase']
 
 
 #########
@@ -31,6 +34,7 @@ class CompanySerializer(serializers.ModelSerializer):
     # - ref            : string #
     # - indice         : string #
     # - sector         : string #
+    # - indicators     : fk     #
     #############################
     indicators = IndicatorSerializer(many=True)
 

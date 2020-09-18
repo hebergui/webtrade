@@ -1,9 +1,3 @@
-import asyncio
-import html
-import time
-import httpx
-from asgiref.sync import sync_to_async
-
 from core.models import *
 from django.contrib.auth import login, authenticate
 # from django.db.models import Count

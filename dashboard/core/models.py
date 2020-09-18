@@ -1,10 +1,5 @@
 from django.db import models
-from django.http import JsonResponse
-from lxml import html
-import requests
-import time
-import httpx
-import asyncio
+
 
 #########
 #EMPLOYEE
@@ -50,10 +45,20 @@ class Indicator(models.Model):
     # Indicator :               #
     # - pub_date       : string #
     # - force          : float  #
+    # - cmin           : float  #
+    # - cmax           : float  #
+    # - copen          : float  #
+    # - cclose         : float  #
+    # - mm30           : float  #
     # - phase          : string #
     #############################
     pub_date = models.CharField(max_length=50)
     force = models.FloatField()
+    cmin = models.FloatField()
+    cmax = models.FloatField()
+    copen = models.FloatField()
+    cclose = models.FloatField()
+    mm30 = models.FloatField()
     phase = models.CharField(max_length=50)
     # company_fk
     company = models.ForeignKey(Company, related_name='indicators', on_delete=models.CASCADE, null=True)

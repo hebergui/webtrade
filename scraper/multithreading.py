@@ -31,14 +31,14 @@ def main():
     url = 'https://screener.blogbourse.net/societes.html'
     url_ref = "https://screener.blogbourse.net/"
 
-    companies = get_companies(url)
-    """
+    #companies = get_companies(url)
+
     companies = [["Total", "CAC 40", "cours-total.html"],
             ["Vallourec", "N/C", "cours-vallourec.html"],
             ["Pharmanext", "Euronext Growth", "cours-pharnext.html"],
             ["Solutions 30 SE", "Euronext Growth", "cours-solutions-30-se.html"]
         ]
-    """
+
     # Create a queue to communicate with the worker threads
     queue = Queue()
 
