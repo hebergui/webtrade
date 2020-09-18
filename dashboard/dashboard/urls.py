@@ -25,8 +25,5 @@ urlpatterns = [
     path('index/', views.Index.as_view(), name='index'),
     path('hello/', views.Hello.as_view(), name='hello'),
     path('hello/<str:clazz>/<int:oid>', views.Hello.as_view(), name='hello'),
-    path('reqsync/', views.req_sync, name='req_sync'),
-    path('reqasync/', views.req_async, name='req_async'),
-    path('pullasync/', views.pull_async, name='pull_async'),
     path('api/', include('api.urls')),
 ]
