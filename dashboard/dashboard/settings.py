@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['35.224.98.28', 'localhost']
+ALLOWED_HOSTS = ['futrax.fr', 'localhost', '127.0.0.1']
 
 # Application definition
 
