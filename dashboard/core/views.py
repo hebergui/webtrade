@@ -34,10 +34,16 @@ class Index(LoginRequiredMixin, View):
     def get(self, request):
         companies = Company.objects.all()
         n_companies = companies.count()
+        sectors = Company.objects.all().values_list('sector', flat=True).distinct()
+        indices = Company.objects.all().values_list('indice', flat=True).distinct()
+        phases =  Indicator.objects.all().values_list('phase', flat=True).distinct()
 
         json = {
             'companies': companies,
             'n_companies': n_companies,
+            'sectors': sectors,
+            'indices': indices,
+            'phases': phases,
         }
         return render(request, self.template, json)
 
