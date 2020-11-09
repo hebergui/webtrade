@@ -4,7 +4,8 @@ from lxml import html
 from datetime import date
 
 #API = "http://35.224.98.28:8000"
-API = "http://0.0.0.0:8000"
+API = "http://futrax.fr:8000"
+#API = "http://0.0.0.0:8000"
 
 def get_companies(url):
     r = httpx.get(url)
