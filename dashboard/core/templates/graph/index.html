@@ -1,0 +1,30 @@
+{% extends "../board.html" %}
+
+{% block sublinks %}
+  <!-- Demo scripts for this page -->
+  <script src="/static/js/graph-demo.js"></script>
+{% endblock %}
+
+{% load core_extras %}
+
+{% block container %}
+    Company clazz = {{ clazz }} and oid = {{ oid }}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    {{ company.name }}
+                </div>
+                <div class="card-body">
+                    <canvas id="graphChart">
+                    </canvas>
+                </div>
+                <div class="card-footer small text-muted">
+                    Candlesticks
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

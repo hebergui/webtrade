@@ -27,8 +27,8 @@ class Login(View):
             return render(request, self.template, {'form': form})
 
 
-class Index(LoginRequiredMixin, View):
-    template = 'index.html'
+class Dashboard(LoginRequiredMixin, View):
+    template = 'dashboard/index.html'
     login_url = '/login/'
 
     def get(self, request):
@@ -54,10 +54,20 @@ class Hello(LoginRequiredMixin, View):
     json = {}
 
     def get(self, request, clazz=None, oid=None):
-        if clazz == 'block':
-            block = Block.objects.get(id=oid)
-            self.template = 'timelines/block.html'
-            self.json = {'clazz': clazz, 'oid': oid, 'oblock': block}
+        self.json = {'clazz': clazz, 'oid': oid}
+
+        return render(request, self.template, self.json)
+
+
+class Graph(LoginRequiredMixin, View):
+    template = 'graph/index.html'
+    json = {}
+
+    def get(self, request, clazz=None, oid=None):
+        if clazz == 'company':
+            company = Company.objects.get(id=oid)
+            self.template = 'graph/index.html'
+            self.json = {'clazz': clazz, 'oid': oid, 'company': company}
 
         else:
             self.template = 'hello/index.html'

@@ -1,4 +1,10 @@
-{% extends "board.html" %}
+{% extends "../board.html" %}
+
+{% block sublinks %}
+  <!-- Demo scripts for this page-->
+  <script src="/static/js/dashboard-demo.js"></script>
+{% endblock %}
+
 {% load core_extras %}
 
 {% block container %}
@@ -90,5 +96,4 @@
         me
       </div>
     </div>
-
 {% endblock %}

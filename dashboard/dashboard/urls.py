@@ -19,11 +19,14 @@ from core import views
 
 
 urlpatterns = [
+    path('', views.Dashboard.as_view(), name='dashboard'),
     path('admin/', admin.site.urls),
-    path('', views.Index.as_view(), name='index'),
     path('login/', views.Login.as_view(), name='login'),
-    path('index/', views.Index.as_view(), name='index'),
+    path('dashboard/', views.Dashboard.as_view(), name='dashboard'),
     path('hello/', views.Hello.as_view(), name='hello'),
     path('hello/<str:clazz>/<int:oid>', views.Hello.as_view(), name='hello'),
+    path('graph/', views.Graph.as_view(), name='graph'),
+    path('graph/<str:clazz>/<int:oid>', views.Graph.as_view(), name='graph'),
     path('api/', include('api.urls')),
 ]
+
