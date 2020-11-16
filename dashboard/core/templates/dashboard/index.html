@@ -1,7 +1,7 @@
 {% extends "../board.html" %}
 
-{% block sublinks %}
-  <!-- Demo scripts for this page-->
+{% block links %}
+  <!-- Demo script/style for this page-->
   <script src="/static/js/dashboard-demo.js"></script>
 {% endblock %}
 
@@ -9,91 +9,91 @@
 
 {% block container %}
 <!-- Icon Cards-->
-    <!-- DataTables For Block -->
-    <div class="card mb-3">
-      <div class="card-header">
-        <i class="fas fa-table"></i>
-        Blocks Table
-      </div>
+  <!-- DataTables For Block -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <i class="fas fa-table"></i>
+      Blocks Table
+    </div>
 
-      <div class="card-body">
-        <!-- Filters -->
-        <div class="row">
-          <div class="col-xl-4 col-sm-6 mb-4">
-            <label class="col-sm">Filter by indice</label>
-            <div class="col-sm">
-              <select class="form-control form-control-sm" id="filter_by_indice" name="indice">
-                <option> </option>
-                {% for i in indices %}
-                  <option> {{ i }} </option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-          <div class="col-xl-4 col-sm-6 mb-4">
-            <label class="col-sm">Filter by sector</label>
-            <div class="col-sm">
-              <select class="form-control form-control-sm" id="filter_by_sector" name="sector">
-                <option> </option>
-                {% for s in sectors %}
-                  <option> {{ s }} </option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-          <div class="col-xl-4 col-sm-6 mb-4">
-            <label class="col-sm">Filter by phase</label>
-            <div class="col-sm">
-              <select class="form-control form-control-sm" id="filter_by_phase" name="phase">
-                <option> </option>
-                {% for p in phases %}
-                  <option> {{ p }} </option>
-                {% endfor %}
-              </select>
-            </div>
+    <div class="card-body">
+      <!-- Filters -->
+      <div class="row">
+        <div class="col-xl-4 col-sm-6 mb-4">
+          <label class="col-sm">Filter by indice</label>
+          <div class="col-sm">
+            <select class="form-control form-control-sm" id="filter_by_indice" name="indice">
+              <option> </option>
+              {% for i in indices %}
+                <option> {{ i }} </option>
+              {% endfor %}
+            </select>
           </div>
         </div>
-
-        <!-- Table -->
-        <div class="table-responsive">
-          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Indice</th>
-                <th>Sector</th>
-                <th>Force</th>
-                <th>Phase</th>
-                <th>Graph</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>Name</th>
-                <th>Indice</th>
-                <th>Sector</th>
-                <th>Force</th>
-                <th>Phase</th>
-                <th>Graph</th>
-              </tr>
-            </tfoot>
-            <tbody>
-            {% for e in companies %}
-              <tr>
-                <td><a href="/hello/company/{{e.id}}">{{ e.name }}</a></td>
-                <td>{{ e.indice }}</td>
-                <td>{{ e.sector }}</td>
-                <td>{{ e.indicators.all|ultimate:"force" }}</td>
-                <td>{{ e.indicators.all|ultimate:"phase" }}</td>
-                <td> o </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
+        <div class="col-xl-4 col-sm-6 mb-4">
+          <label class="col-sm">Filter by sector</label>
+          <div class="col-sm">
+            <select class="form-control form-control-sm" id="filter_by_sector" name="sector">
+              <option> </option>
+              {% for s in sectors %}
+                <option> {{ s }} </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-6 mb-4">
+          <label class="col-sm">Filter by phase</label>
+          <div class="col-sm">
+            <select class="form-control form-control-sm" id="filter_by_phase" name="phase">
+              <option> </option>
+              {% for p in phases %}
+                <option> {{ p }} </option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
       </div>
-      <div class="card-footer small text-muted">
-        me
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Indice</th>
+              <th>Sector</th>
+              <th>Force</th>
+              <th>Phase</th>
+              <th>Graph</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Name</th>
+              <th>Indice</th>
+              <th>Sector</th>
+              <th>Force</th>
+              <th>Phase</th>
+              <th>Graph</th>
+            </tr>
+          </tfoot>
+          <tbody>
+          {% for e in companies %}
+            <tr>
+              <td><a href="/hello/company/{{e.id}}">{{ e.name }}</a></td>
+              <td>{{ e.indice }}</td>
+              <td>{{ e.sector }}</td>
+              <td>{{ e.indicators.all|ultimate:"force" }}</td>
+              <td>{{ e.indicators.all|ultimate:"phase" }}</td>
+              <td> o </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
+    <div class="card-footer small text-muted">
+      me
+    </div>
+  </div>
 {% endblock %}
