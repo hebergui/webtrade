@@ -54,7 +54,12 @@ def download_data(name, indice, ref, url_ref):
 
         chart2 = txt.split('var dataC = google.visualization.arrayToDataTable(')[1].split('\n')[0].split(', true')[0]
         data_chart2 = eval(chart2)
-        for pub_date, cmin, cmax, copen, cclose, mm30 in data_chart2:
+
+        #Patch to add on database :
+        #ALTER TABLE core_indicator RENAME COLUMN cclose TO cmax;
+        #ALTER TABLE core_indicator RENAME COLUMN copen TO cclose;
+        #ALTER TABLE core_indicator RENAME COLUMN ccmax TO copen;        
+        for pub_date, cmin, copen, cclose, cmax, mm30 in data_chart2:
             if pub_date not in histo:
                 histo[pub_date] = []
             histo[pub_date] += [cmin, cmax, copen, cclose, mm30, 'N/C']

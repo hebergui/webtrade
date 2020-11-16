@@ -1,14 +1,22 @@
 {% extends "../board.html" %}
 
 {% block links %}
-  <!-- Demo script/style for this page -->
-  <script src="/static/js/graph-demo.js"></script>
+    <!-- Demo script/style for this page -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@1.24.1"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0-beta.3/dist/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@0.2.1"></script>
+    <script src="/static/vendor/chartjs-chart-financial.js"></script>
+    <script src="/static/js/graph-demo.js"></script>
 {% endblock %}
 
 {% load core_extras %}
 
 {% block container %}
-    Company clazz = {{ clazz }} and oid = {{ oid }}
+    <!-- Django Var -->
+    <script>
+        var datajs = JSON.parse('{{ data4chart|js }}')
+    </script>
+
     <div class="row">
         <div class="col-sm-12">
             <div class="card">

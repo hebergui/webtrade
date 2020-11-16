@@ -1,15 +1,22 @@
-var graphCtx = document.getElementById("graphChart").getContext('2d');
-if (graphCtx != null) {
-    var graphChart = new Chart(graphCtx, {
-        type: 'candlestick',
-        data: {
-            datasets: [{
-                label: 'Label', //msgChart.graph_label,
-                data: getRandomData('01 Apr 2017 00:00 Z', 60), //msgChart.graph_data,
-            }]
-        },
-    });
-}
+// Call the dataTables jQuery plugin
+$(document).ready(function() {
+   var graphCtx = document.getElementById("graphChart");
+    if (graphCtx != null) {
+        var graphChart = new Chart(graphCtx, {
+            type: 'candlestick',
+            data: {
+                datasets: [{
+                    label: 'CHRT - Chart.js Corporation',
+                    data: datajs,
+                }]
+            },
+        });
+    }
+});
+
+
+var barCount = 60;
+var initialDateStr = '01 Apr 2017 00:00 Z';
 
 var getRandomInt = function(max) {
 	return Math.floor(Math.random() * Math.floor(max));
