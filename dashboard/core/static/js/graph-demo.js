@@ -1,53 +1,60 @@
-// Call the dataTables jQuery plugin
-$(document).ready(function() {
-   var graphCtx = document.getElementById("graphChart");
-    if (graphCtx != null) {
-        var graphChart = new Chart(graphCtx, {
-            type: 'candlestick',
-            data: {
-                datasets: [{
-                    label: 'CHRT - Chart.js Corporation',
-                    data: datajs,
-                }]
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawStocksChart);
+
+function drawStocksChart() {
+    // Create and populate the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date'); //0
+    data.addColumn('number', 'Low'); //1
+    data.addColumn('number', 'Open'); //2
+    data.addColumn('number', 'High'); //3
+    data.addColumn('number', 'Close'); //4
+    data.addColumn('number', 'MM30'); //5
+    data.addColumn('number', 'Phase'); //6
+    data.addColumn('number', 'Force'); //7
+    data.addRows(data4stocks);
+
+    var options = {
+        legend: {
+            position: 'top'
+        },
+        candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
+            risingColor: { strokeWidth: 0, fill: '#0f9d58' }   // green
+        },
+        vAxes: {
+            1: {
+                ticks: [0, 1, 2, 3, 4]
+            }
+        },
+        seriesType: "candlesticks",
+        series: {
+            0: {
+                color: "black",
+                visibleInLegend: false,
+                targetAxisIndex: 0
             },
-        });
+            1: {
+                type: "line",
+                targetAxisIndex: 0
+            },
+            2: {
+                color: '#dfe5f0', //grey
+                type: "bars",
+                targetAxisIndex: 1,
+            },
+            3: {
+                color: '#f5d0c4', //orange
+                type: "line",
+                targetAxisIndex: 1,
+            }
+        }
+    };
+
+    // Create and draw the visualization.
+    var chartCtx = document.getElementById('chart_stocks_div');
+    if (chartCtx != null) {
+        var chart = new google.visualization.ComboChart(chartCtx);
+        chart.draw(data, options);
     }
-});
-
-
-var barCount = 60;
-var initialDateStr = '01 Apr 2017 00:00 Z';
-
-var getRandomInt = function(max) {
-	return Math.floor(Math.random() * Math.floor(max));
-};
-
-function randomNumber(min, max) {
-	return Math.random() * (max - min) + min;
-}
-
-function randomBar(date, lastClose) {
-	var open = randomNumber(lastClose * 0.95, lastClose * 1.05).toFixed(2);
-	var close = randomNumber(open * 0.95, open * 1.05).toFixed(2);
-	var high = randomNumber(Math.max(open, close), Math.max(open, close) * 1.1).toFixed(2);
-	var low = randomNumber(Math.min(open, close) * 0.9, Math.min(open, close)).toFixed(2);
-	return {
-		t: date.valueOf(),
-		o: open,
-		h: high,
-		l: low,
-		c: close
-	};
-}
-
-function getRandomData(dateStr, count) {
-	var date = luxon.DateTime.fromRFC2822(dateStr);
-	var data = [randomBar(date, 30)];
-	while (data.length < count) {
-		date = date.plus({days: 1});
-		if (date.weekday <= 5) {
-			data.push(randomBar(date, data[data.length - 1].c));
-		}
-	}
-	return data;
 }

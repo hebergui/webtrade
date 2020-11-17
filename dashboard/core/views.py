@@ -67,22 +67,18 @@ class Graph(LoginRequiredMixin, View):
         if clazz == 'company':
             company = Company.objects.get(id=oid)
             indicators = Indicator.objects.filter(company_id=oid)
-            data = []
-            #{t: 1491004800000, o: "30.88", h: "32.47", l: "29.01", c: "31.12"}
+            stocks = [] #[date, low, open, high, close, mm30, phase, force]
             for i in indicators:
-                d, m, y = i.pub_date.split('/') #20/01/19
-                dt = datetime(int('20'+y), int(m), int(d))
-                t = int(dt.timestamp()) * 1000
-                data.append(
-                    {'t': t,
-                     'o': i.copen, #i.cmax, #open
-                     'h': i.cmax, #i.cclose, #max
-                     'l': i.cmin, #i.cmin, #min
-                     'c': i.cclose, #i.copen, #close
-                     }
+                if i.phase[0] in ['1', '2', '3', '4']:
+                    p = int(i.phase[0])
+                else:
+                    p = 0
+                stocks.append(
+                    [i.pub_date, i.cmin, i.copen, i.cclose, i.cmax, i.mm30, p, i.force]
                 )
+
             self.template = 'graph/index.html'
-            self.json = {'clazz': clazz, 'oid': oid, 'company': company, 'data4chart':data}
+            self.json = {'clazz': clazz, 'oid': oid, 'company': company, 'data4stocks': stocks}
 
         else:
             self.template = 'hello/index.html'

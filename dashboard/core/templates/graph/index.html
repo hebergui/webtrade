@@ -2,10 +2,6 @@
 
 {% block links %}
     <!-- Demo script/style for this page -->
-    <script src="https://cdn.jsdelivr.net/npm/luxon@1.24.1"></script>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0-beta.3/dist/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@0.2.1"></script>
-    <script src="/static/vendor/chartjs-chart-financial.js"></script>
     <script src="/static/js/graph-demo.js"></script>
 {% endblock %}
 
@@ -14,7 +10,7 @@
 {% block container %}
     <!-- Django Var -->
     <script>
-        var datajs = JSON.parse('{{ data4chart|js }}')
+        var data4stocks = JSON.parse('{{ data4stocks|js }}')
     </script>
 
     <div class="row">
@@ -25,11 +21,10 @@
                     {{ company.name }}
                 </div>
                 <div class="card-body">
-                    <canvas id="graphChart">
-                    </canvas>
+                    <div id="chart_stocks_div" style="height: 500px; width: 100%;"></div>
                 </div>
                 <div class="card-footer small text-muted">
-                    Candlesticks
+                    Candlesticks with Google Chart
                 </div>
             </div>
         </div>
