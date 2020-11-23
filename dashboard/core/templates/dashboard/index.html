@@ -64,7 +64,7 @@
               <th>Sector</th>
               <th>Force</th>
               <th>Phase</th>
-              <th>Graph</th>
+              <th>Infos</th>
             </tr>
           </thead>
           <tfoot>
@@ -74,7 +74,7 @@
               <th>Sector</th>
               <th>Force</th>
               <th>Phase</th>
-              <th>Graph</th>
+              <th>Infos</th>
             </tr>
           </tfoot>
           <tbody>
@@ -85,7 +85,7 @@
               <td>{{ e.sector }}</td>
               <td>{{ e.indicators.all|ultimate:"force" }}</td>
               <td>{{ e.indicators.all|ultimate:"phase" }}</td>
-              <td> o </td>
+              <td>{{ e.indicators.all|weinstein }}</td>
             </tr>
           {% endfor %}
           </tbody>

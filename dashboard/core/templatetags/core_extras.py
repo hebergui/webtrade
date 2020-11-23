@@ -72,3 +72,33 @@ def ultimate(qs, attr):
         return getattr(obj, attr)
     else:
         return obj
+
+@register.filter
+def weinstein(qs):
+    obj = None
+    attr = "phase"
+
+    if qs.count() < 2:
+        return ""
+
+    indicators = qs.order_by('-id')
+    pnow = indicators[0].phase[0]
+    pbefore = indicators[1].phase[0]
+    if pnow not in ['1', '2', '3', '4'] or pbefore not in ['1', '2', '3', '4']:
+        return "N/A"
+
+    # phase 1 -> phase 2 : buy sig
+    if pbefore == '1'and pnow == '2':
+        return "Buy"
+    # phase 3 -> phase 4 : sell sig
+    if pbefore == '3' and pnow == '4':
+        return "Sell"
+    # phase x -> phase x : nb
+    count = indicators.count()
+    if pnow == pbefore:
+        i = 2
+        while indicators[i].phase[0] == pnow and i < count-1:
+            i += 1
+        return f'{i} weeks'
+
+    return "wait"
