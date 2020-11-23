@@ -1,36 +1,39 @@
 # webtrader
-Django webui application to explore data
+Django webui application to explore financial data (mainly Stan Weinstein methods)
 
 ## Prerequisits and setup
-To create our environment we use pipenv.
-Make sure you have python3 installed (last version sine python 2 is deprecated)
+We use [Virtualenv](http://pypi.org/project/virtualenv) because it's a great tool to create isolated Python environments : it creates a folder which contains all the necessary executables to use the packages that a Python project would need.
+
+1. Make sure you have python3 installed (last version sine python 2 is deprecated)
 ```bash
 python --version
-Python 3.7.3
+Python 3.x.x
 ```
-Last command should returned something like Python 3.7.x.
-
-After, install pip and pipenv :
-
+2. After, install pip and virtualenv :
 ```bash
 python -m pip install pip
-python -m pip install pipenv
+python -m pip install virtualenv
 ```
-Create your virtualenv for dashboard
+3. Create your virtualenv for dashboard in "venv" directory
 ```bash
-cd webtrader/dashboard
-pipenv shell
+cd webtrader
+python -m virtualenv -p /usr/bin/python3 venvsource 
 ```
-Now you're ok to start the project, we supposed you already have cloned this repo. Last to do before launch python projet is to pull all dependances :
+4. To begin using the virtual environment, it needs to be activated:
 ```bash
-pip install -r requirements.txt
+source venv/bin/activate
+(deactivate : when you are done working in the virtual environment)
 ```
-Now try to launch after initiation
+5. Now you're ok to start the project, we supposed you already have cloned this repo. Last thing to do before launching django app is to pull all dependancies :
+```bash
+python -m pip install -r requirements.txt
+```
+6. Running time
 ```bash
 python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser
-python manage.py runserver
+python manage.py runserver 0.0.0.0:8000
 ```
-
+End of 
 ## Django Dev
 
 To revert project due to too many modifications that have corrupted the database and the code :
