@@ -1,12 +1,11 @@
-from core.models import *
 from django.contrib.auth import login, authenticate
-# from django.db.models import Count
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
-from datetime import datetime
+from .models import *
+
 
 class Login(View):
     template = 'login.html'
