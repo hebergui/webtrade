@@ -17,7 +17,7 @@ python -m pip install virtualenv
 3. Create your virtualenv for dashboard in "venv" directory
 ```bash
 cd webtrader
-python -m virtualenv -p /usr/bin/python3 venvsource 
+python -m virtualenv -p /usr/bin/python3 venv 
 ```
 4. To begin using the virtual environment, it needs to be activated:
 ```bash
@@ -33,7 +33,7 @@ python -m pip install -r requirements.txt
 python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser
 python manage.py runserver 0.0.0.0:8000
 ```
-End of 
+
 ## Django Dev
 
 To revert project due to too many modifications that have corrupted the database and the code :
