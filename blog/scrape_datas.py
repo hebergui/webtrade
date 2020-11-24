@@ -4,7 +4,7 @@ import time
 from queue import Queue
 from threading import Thread
 
-from helpers import *
+from .helpers import *
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
