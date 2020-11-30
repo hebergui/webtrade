@@ -83,9 +83,9 @@
               <td><a href="/graph/company/{{e.id}}">{{ e.name }}</a></td>
               <td>{{ e.indice }}</td>
               <td>{{ e.sector }}</td>
-              <td>{{ e.indicators.all|ultimate:"force" }}</td>
-              <td>{{ e.indicators.all|ultimate:"phase" }}</td>
-              <td>{{ e.indicators.all|weinstein }}</td>
+              <td>{{ indicators|index:e.pk|index:0 }}</td>
+              <td>{{ indicators|index:e.pk|index:1 }}</td>
+              <td>{{ indicators|index:e.pk|index:2 }}</td> <!-- e.indicators.all|weinstein -->
             </tr>
           {% endfor %}
           </tbody>

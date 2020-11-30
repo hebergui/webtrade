@@ -1,0 +1,59 @@
+{% extends "../board.html" %}
+
+{% block links %}
+  <!-- Demo script/style for this page -->
+{% endblock %}
+
+{% load core_extras %}
+{% load crispy_forms_tags %}
+
+{% block container %}
+    <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-bordered" id="employeeTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Option</th>
+              <th>PRU</th>
+              <th>Target</th>
+              <th>Stop</th>
+              <th>Price</th>
+              <th>P/L</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Name</th>
+              <th>Option</th>
+              <th>PRU</th>
+              <th>Target</th>
+              <th>Stop</th>
+              <th>Price</th>
+              <th>P/L</th>
+              <th>Edit</th>
+            </tr>
+          </tfoot>
+          <tbody>
+          {% for s in stocks %}
+            <tr>
+              <td>{{ e.name }}</td>
+              <td>{{ e.option }}</td>
+              <td>{{ e.pru }}</td>
+              <td>{{ e.target }}</td>
+              <td>{{ e.stop }}</td>
+              <td>...</td>
+              <td>...</td>
+              <td>
+                  <button onClick="location.href='/stock/{{e.pk}}'" type="button" class="btn btn-primary">edit</button>
+                  /
+                  <button onClick="location.href='/stock/{{e.pk}}/delete'" type="button" class="btn btn-danger">delete</button>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <button onclick="location.href='/stock/add'" type="submit" class="btn btn-primary">Create</button>
+      </div>
+{% endblock %}

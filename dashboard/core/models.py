@@ -21,32 +21,16 @@ class Employee(BaseModel):
 
 
 class Company(BaseModel):
-    #############################
-    # Company :                 #
-    # - name           : string #
-    # - ref            : string #
-    # - indice         : string #
-    # - sector         : string #
-    # - indicators     : fk     #
-    #############################
     name = models.CharField(max_length=50)
     ref = models.CharField(max_length=50)
     indice = models.CharField(max_length=50)
     sector = models.CharField(max_length=150)
 
+    def __str__(self):
+        return self.name
+
 
 class Indicator(BaseModel):
-    #############################
-    # Indicator :               #
-    # - pub_date       : string #
-    # - force          : float  #
-    # - cmin           : float  #
-    # - cmax           : float  #
-    # - copen          : float  #
-    # - cclose         : float  #
-    # - mm30           : float  #
-    # - phase          : string #
-    #############################
     pub_date = models.CharField(max_length=50)
     force = models.FloatField()
     cmin = models.FloatField()
@@ -55,6 +39,21 @@ class Indicator(BaseModel):
     cclose = models.FloatField()
     mm30 = models.FloatField()
     phase = models.CharField(max_length=50)
-    # company_fk
-    company = models.ForeignKey(Company, related_name='indicators', on_delete=models.CASCADE, null=True)
+    company_fk = models.ForeignKey(Company, on_delete=models.CASCADE, unique=False)
 
+    def __str__(self):
+        return self.pub_date
+
+
+class Stock(BaseModel):
+    OPTIONS_CHOICES = [('P', 'PUT'), ('C', 'CALL')]
+
+    name = models.CharField(max_length=150)
+    option = models.CharField(max_length=1, choices=OPTIONS_CHOICES)
+    pru = models.FloatField()
+    target = models.FloatField()
+    stop = models.FloatField()
+    company_fk = models.ForeignKey(Company, on_delete=models.CASCADE, unique=False)
+
+    def __str__(self):
+        return self.name

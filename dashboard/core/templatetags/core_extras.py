@@ -102,3 +102,9 @@ def weinstein(qs):
         return f'{i} weeks'
 
     return "wait"
+
+
+@register.filter
+def index(indexable, i):
+    if indexable is not None:
+        return indexable[i]

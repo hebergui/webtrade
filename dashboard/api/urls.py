@@ -4,8 +4,11 @@ from . import views
 
 
 router = routers.DefaultRouter()
+router.register(r'stocks', views.StockViewSet)
+router.register(r'employees', views.EmployeeViewSet)
 router.register(r'companies', views.CompanyViewSet)
 router.register(r'indicators', views.IndicatorViewSet)
+router.register(r'companies', views.CompanyViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

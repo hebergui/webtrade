@@ -1,0 +1,20 @@
+{% extends "../board.html" %}
+
+{% block links %}
+  <!-- Demo script/style for this page -->
+{% endblock %}
+
+{% load core_extras %}
+{% load crispy_forms_tags %}
+
+{% block container %}
+    <h2>Employee Deletion</h2>
+    <form method="POST" class="form">
+        {% csrf_token %}
+        <p>
+            Are you sure you want to delete <b>{{ object }}</b> ?
+        </p>
+        <button onClick="javascript:history.go(-1);" type="button" class="btn btn-light">Back</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+{% endblock %}

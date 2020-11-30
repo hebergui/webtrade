@@ -4,7 +4,7 @@ import time
 from queue import Queue
 from threading import Thread
 
-from .helpers import *
+from helpers import *
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ class DownloadWorker(Thread):
             name, indice, ref, url_ref = self.queue.get()
             try:
                 name, debug = download_data(name, indice, ref, url_ref)
-                logger.info('End {} (Code: {})'.format(name, debug))
+                logger.info('End {} (Debug: {})'.format(name, debug))
             finally:
                 self.queue.task_done()
 
@@ -32,7 +32,6 @@ def main():
     url_ref = "https://screener.blogbourse.net/"
 
     companies = get_companies(url)
-
     """
     companies = [["Total", "CAC 40", "cours-total.html"],
             ["Vallourec", "N/C", "cours-vallourec.html"],
@@ -40,6 +39,7 @@ def main():
             ["Solutions 30 SE", "Euronext Growth", "cours-solutions-30-se.html"]
         ]
     """
+
     # Create a queue to communicate with the worker threads
     queue = Queue()
 

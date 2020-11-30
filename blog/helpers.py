@@ -1,5 +1,4 @@
 import httpx
-
 from lxml import html
 from datetime import date
 
@@ -24,6 +23,14 @@ def get_companies(url):
     companies = [companies[x] + [str(tab2[x])] for x in range(0, len(tab2))]
 
     return companies
+
+
+def get_pk(name):
+    r = httpx.get(API + '/get_pk/company/' + name)
+    if r.status_code == 200:
+        return r.json().get('pk')
+    else:
+        return None
 
 
 def download_data(name, indice, ref, url_ref):
@@ -56,10 +63,6 @@ def download_data(name, indice, ref, url_ref):
         chart2 = txt.split('var dataC = google.visualization.arrayToDataTable(')[1].split('\n')[0].split(', true')[0]
         data_chart2 = eval(chart2)
 
-        # Patch to add on database :
-        # ALTER TABLE core_indicator RENAME COLUMN cclose TO cmax;
-        # ALTER TABLE core_indicator RENAME COLUMN copen TO cclose;
-        # ALTER TABLE core_indicator RENAME COLUMN ccmax TO copen;
         for pub_date, cmin, copen, cclose, cmax, mm30 in data_chart2:
             if pub_date not in histo:
                 histo[pub_date] = []
@@ -97,30 +100,42 @@ def download_data(name, indice, ref, url_ref):
     except ValueError as err:
         return name, err
 
-    # Construction of json
-    indicators = []
+    # Check if company exists in db
+    pk = get_pk(name)
+    if pk is None:
+        # Create company
+        js = {
+            "name": name,
+            "ref": ref,
+            "indice": indice,
+            "sector": sector,
+        }
+        r = httpx.post(API + '/api/companies/', json=js)
+        if r.status_code == 201:
+            pk = get_pk(name)
+        else:
+            return name, r.content
+
+    count = 0
+    ok = 0
+    # Create all indicators related to company
     for k, v in histo.items():
+        count += 1
         pub_date, force, cmin, cmax, copen, cclose, mm30, phase = v
-        js = {'pub_date': pub_date,
-              'force': force,
-              'cmin': cmin,
-              'cmax': cmax,
-              'copen': copen,
-              'cclose': cclose,
-              'mm30': mm30,
-              'phase': phase
-              }
-        indicators.append(js)
+        js = {
+            'pub_date': pub_date,
+            'force': force,
+            'cmin': cmin,
+            'cmax': cmax,
+            'copen': copen,
+            'cclose': cclose,
+            'mm30': mm30,
+            'phase': phase,
+            'company': pk
+        }
+        # Send to api
+        r = httpx.post(API + '/api/indicators/', json=js)
+        if r.status_code == 201:
+            ok += 1
 
-    js = {
-        "name": name,
-        "ref": ref,
-        "indice": indice,
-        "sector": sector,
-        "indicators": indicators,
-    }
-
-    # Send to api
-    r = httpx.post(API + '/api/companies/', json=js)
-
-    return name, r.status_code
+    return name, '{}/{}'.format(ok, count)

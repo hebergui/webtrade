@@ -1,0 +1,56 @@
+{% extends "../board.html" %}
+
+{% block links %}
+  <!-- Demo script/style for this page -->
+{% endblock %}
+
+{% load core_extras %}
+{% load crispy_forms_tags %}
+
+{% block container %}
+    <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-bordered" id="employeeTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start Date</th>
+              <th>Salary</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start Date</th>
+              <th>Salary</th>
+              <th>Edit</th>
+            </tr>
+          </tfoot>
+          <tbody>
+          {% for e in employees %}
+            <tr>
+              <td>{{ e.name }}</td>
+              <td>{{ e.position }}</td>
+              <td>{{ e.office }}</td>
+              <td>{{ e.age }}</td>
+              <td>{{ e.start_date }}</td>
+              <td>{{ e.salary }}</td>
+              <td>
+                  <button onClick="location.href='/employee/{{e.pk}}'" type="button" class="btn btn-primary">edit</button>
+                  /
+                  <button onClick="location.href='/employee/{{e.pk}}/delete'" type="button" class="btn btn-danger">delete</button>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <button onclick="location.href='/employee/add'" type="submit" class="btn btn-primary">Create</button>
+      </div>
+{% endblock %}
