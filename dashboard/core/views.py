@@ -108,7 +108,7 @@ class StockCreate(LoginRequiredMixin, CreateView):
 
 class StockUpdate(LoginRequiredMixin, UpdateView):
     model = Stock
-    fields = ('pru', 'target', 'stop', 'ticker', 'link')
+    fields = ('name', 'pru', 'target', 'stop', 'ticker', 'link')
     template_name = 'stock/form.html'
     success_url = '/stock/'
 
