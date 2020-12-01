@@ -58,3 +58,13 @@ function drawStocksChart() {
         chart.draw(data, options);
     }
 }
+
+$(document).ready(function() {
+    $('#edit-type-timeline select').change(function() {
+            if ($(this).val() == "block") {
+                url = '/graph/company/' + $('#company_selector select').val()
+                event.preventDefault();
+                location.href = url
+            }
+    });
+});

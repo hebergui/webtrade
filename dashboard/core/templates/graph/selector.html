@@ -1,0 +1,31 @@
+{% extends "../board.html" %}
+
+{% block links %}
+    <!-- Demo script/style for this page -->
+
+{% endblock %}
+
+{% load core_extras %}
+
+{% block container %}
+    <script>
+        $(document).ready(function() {
+        $('#company_selector select').change(function() {
+            url = '/graph/company/' + $('#company_selector select').val();
+            event.preventDefault();
+            location.href = url;
+        });
+    });
+    </script>
+    <div class="row" id="company_selector">
+        <label class="col-sm-2 align-middle">Company :</label>
+        <div class="col-sm-10">
+            <select class="form-control form-control-sm">
+            {% for c in companies %}
+                <option value="{{c.0}}">{{c.1}}</option>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
+
+{% endblock %}

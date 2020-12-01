@@ -29,39 +29,39 @@ class Login(View):
         else:
             return render(request, self.template, {'form': form})
 
-def weinstein(qs):
-    obj = None
-    attr = "phase"
-
-    if qs.count() < 2:
-        return ""
-
-    indicators = qs.order_by('-id')
-    pnow = indicators[0].phase[0]
-    pbefore = indicators[1].phase[0]
-    if pnow not in ['1', '2', '3', '4'] or pbefore not in ['1', '2', '3', '4']:
-        return "N/A"
-
-    # phase 1 -> phase 2 : buy sig
-    if pbefore == '1'and pnow == '2':
-        return "Buy"
-    # phase 3 -> phase 4 : sell sig
-    if pbefore == '3' and pnow == '4':
-        return "Sell"
-    # phase x -> phase x : nb
-    count = indicators.count()
-    if pnow == pbefore:
-        i = 2
-        while indicators[i].phase[0] == pnow and i < count-1:
-            i += 1
-        return f'{i} weeks'
-
-    return "wait"
-
 
 class Dashboard(LoginRequiredMixin, View):
     template = 'dashboard/index.html'
     login_url = '/login/'
+
+    def weinstein(self, qs):
+        obj = None
+        attr = "phase"
+
+        if qs.count() < 2:
+            return ""
+
+        indicators = qs.order_by('-id')
+        pnow = indicators[0].phase[0]
+        pbefore = indicators[1].phase[0]
+        if pnow not in ['1', '2', '3', '4'] or pbefore not in ['1', '2', '3', '4']:
+            return "N/A"
+
+        # phase 1 -> phase 2 : buy sig
+        if pbefore == '1' and pnow == '2':
+            return "Buy"
+        # phase 3 -> phase 4 : sell sig
+        if pbefore == '3' and pnow == '4':
+            return "Sell"
+        # phase x -> phase x : nb
+        count = indicators.count()
+        if pnow == pbefore:
+            i = 2
+            while indicators[i].phase[0] == pnow and i < count - 1:
+                i += 1
+            return f'{i} weeks'
+
+        return "wait"
 
     def get(self, request):
         companies = Company.objects.all()
@@ -73,7 +73,7 @@ class Dashboard(LoginRequiredMixin, View):
             inds = Indicator.objects.filter(company_fk=company.pk).order_by('-id')
             indicator = None
             if inds.count() > 0:
-                indicator = [inds[0].force, inds[0].phase, weinstein(inds)]
+                indicator = [inds[0].force, inds[0].phase, self.weinstein(inds)]
             indicators[company.pk] = indicator
 
         json = {
@@ -118,9 +118,9 @@ class Graph(LoginRequiredMixin, View):
             self.json = {'clazz': clazz, 'oid': oid, 'company': company, 'data4stocks': stocks}
 
         else:
-            self.template = 'hello/index.html'
-            # blocks = Block.objects.all().values_list('id', 'name')
-            self.json = {'clazz': clazz, 'oid': oid}
+            self.template = 'graph/selector.html'
+            companies = Company.objects.all().values_list('id', 'name').order_by('name')
+            self.json = {'companies': companies}
 
         return render(request, self.template, self.json)
 
