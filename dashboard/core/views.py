@@ -68,17 +68,9 @@ class Dashboard(LoginRequiredMixin, View):
         sectors = Company.objects.all().values_list('sector', flat=True).distinct().order_by('sector')
         indices = Company.objects.all().values_list('indice', flat=True).distinct()
         phases = Indicator.objects.all().values_list('phase', flat=True).distinct().order_by('phase')
-        indicators = {}
-        for company in companies:
-            inds = Indicator.objects.filter(company_fk=company.pk).order_by('-id')
-            indicator = None
-            if inds.count() > 0:
-                indicator = [inds[0].force, inds[0].phase, self.weinstein(inds)]
-            indicators[company.pk] = indicator
 
         json = {
             'companies': companies,
-            'indicators': indicators,
             'sectors': sectors,
             'indices': indices,
             'phases': phases,
@@ -138,15 +130,16 @@ class StockView(LoginRequiredMixin, View):
 
 class StockCreate(LoginRequiredMixin, CreateView):
     model = Stock
-    fields = ('name', 'option', 'pru', 'target', 'stop')
+    fields = ('name', 'company_fk', 'option', 'pru', 'target', 'stop', 'ticker', 'link')
     template_name = 'stock/form.html'
     success_url = '/stock/'
 
 
 class StockUpdate(LoginRequiredMixin, UpdateView):
     model = Stock
-    fields = ('pru', 'target', 'stop')
+    fields = ('pru', 'target', 'stop', 'ticker', 'link')
     template_name = 'stock/form.html'
+    success_url = '/stock/'
 
 
 class StockDelete(LoginRequiredMixin, DeleteView):

@@ -20,6 +20,7 @@
               <th>Stop</th>
               <th>Price</th>
               <th>P/L</th>
+              <th>Infos</th>
               <th>Edit</th>
             </tr>
           </thead>
@@ -32,23 +33,25 @@
               <th>Stop</th>
               <th>Price</th>
               <th>P/L</th>
+              <th>Infos</th>
               <th>Edit</th>
             </tr>
           </tfoot>
           <tbody>
           {% for s in stocks %}
             <tr>
-              <td>{{ e.name }}</td>
-              <td>{{ e.option }}</td>
-              <td>{{ e.pru }}</td>
-              <td>{{ e.target }}</td>
-              <td>{{ e.stop }}</td>
-              <td>...</td>
-              <td>...</td>
+              <td><a href="/graph/company/{{s.company_fk.id}}">{{ s.name }}</a></td>
+              <td>{{ s.option }}</td>
+              <td>{{ s.pru }} €</td>
+              <td>{{ s.target }} €</td>
+              <td>{{ s.stop }} €</td>
+              <td>{{ s.ticker|get_price }} €</td>
+              <td>{{ s.ticker|get_pl:s.pru }} %</td>
+              <td><a href="{{s.link}}" target="_blank">link</a></td>
               <td>
-                  <button onClick="location.href='/stock/{{e.pk}}'" type="button" class="btn btn-primary">edit</button>
+                  <button onClick="location.href='/stock/{{s.pk}}'" type="button" class="btn btn-primary">edit</button>
                   /
-                  <button onClick="location.href='/stock/{{e.pk}}/delete'" type="button" class="btn btn-danger">delete</button>
+                  <button onClick="location.href='/stock/{{s.pk}}/delete'" type="button" class="btn btn-danger">delete</button>
               </td>
             </tr>
           {% endfor %}

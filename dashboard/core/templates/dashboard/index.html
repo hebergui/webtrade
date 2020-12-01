@@ -83,9 +83,9 @@
               <td><a href="/graph/company/{{e.id}}">{{ e.name }}</a></td>
               <td>{{ e.indice }}</td>
               <td>{{ e.sector }}</td>
-              <td>{{ indicators|index:e.pk|index:0 }}</td>
-              <td>{{ indicators|index:e.pk|index:1 }}</td>
-              <td>{{ indicators|index:e.pk|index:2 }}</td>
+              <td>{{ e.get_current_force }}</td>
+              <td>{{ e.get_current_phase }}</td>
+              <td>{{ e.get_weinstein }}</td>
             </tr>
           {% endfor %}
           </tbody>
