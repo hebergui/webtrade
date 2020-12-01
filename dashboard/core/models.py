@@ -99,9 +99,9 @@ def current_force(company_id):
 def current_phase(company_id):
     indicators = Indicator.objects.filter(company_fk=company_id).order_by('-id')
     if indicators.count() > 0:
-        return indicators[0].phase[0]
+        return indicators[0].phase
     else:
-        return None
+        return "N/C"
 
 
 def weinstein(company_id):

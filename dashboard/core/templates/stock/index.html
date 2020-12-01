@@ -20,6 +20,8 @@
               <th>Stop</th>
               <th>Price</th>
               <th>P/L</th>
+              <th>Phase</th>
+              <th>Wst</th>
               <th>Infos</th>
               <th>Edit</th>
             </tr>
@@ -33,6 +35,8 @@
               <th>Stop</th>
               <th>Price</th>
               <th>P/L</th>
+              <th>Phase</th>
+              <th>Wst</th>
               <th>Infos</th>
               <th>Edit</th>
             </tr>
@@ -47,6 +51,8 @@
               <td>{{ s.stop }} €</td>
               <td>{{ s.ticker|get_price }} €</td>
               <td>{{ s.ticker|get_pl:s.pru }} %</td>
+              <td>{{ s.get_current_phase }}</td>
+              <td>{{ s.get_weinstein }}</td>
               <td><a href="{{s.link}}" target="_blank">link</a></td>
               <td>
                   <button onClick="location.href='/stock/{{s.pk}}'" type="button" class="btn btn-primary">edit</button>
