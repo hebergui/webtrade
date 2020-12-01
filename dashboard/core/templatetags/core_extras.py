@@ -26,28 +26,28 @@ def get_attr(obj, attr):
 
 
 @register.filter
-def get_sum(list):
-    return sum(list)
+def get_sum(li):
+    return sum(li)
 
 
 @register.filter
-def get_min(list):
-    return min(list)
+def get_min(li):
+    return min(li)
 
 
 @register.filter
-def get_median(list):
-    return statistics.median(list)
+def get_median(li):
+    return statistics.median(li)
 
 
 @register.filter
-def get_mean(list):
-    return statistics.mean(list)
+def get_mean(li):
+    return statistics.mean(li)
 
 
 @register.filter
-def get_max(list):
-    return max(list)
+def get_max(li):
+    return max(li)
 
 
 @register.filter
