@@ -18,6 +18,7 @@ urlpatterns = [
     path('graph/<str:clazz>/<int:oid>', Graph.as_view(), name='graph'),
 
     path('stock/', StockView.as_view(), name='stock'),
+    path('stock/<str:refresh>', StockView.as_view(), name='stock-refresh'),
     path('stock/add/', StockCreate.as_view(), name='stock-add'),
     path('stock/<int:pk>/', StockUpdate.as_view(), name='stock-update'),
     path('stock/<int:pk>/delete/', StockDelete.as_view(), name='stock-delete'),

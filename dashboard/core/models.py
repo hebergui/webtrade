@@ -1,4 +1,5 @@
 from django.db import models
+import yfinance as yf
 
 
 class BaseModel(models.Model):
@@ -69,14 +70,22 @@ class Stock(BaseModel):
     name = models.CharField(max_length=150)
     option = models.CharField(max_length=1, choices=OPTIONS_CHOICES)
     pru = models.FloatField()
-    target = models.FloatField()
-    stop = models.FloatField()
-    link = models.CharField(max_length=150)
+    target = models.FloatField(blank=True, default=0)
+    stop = models.FloatField(blank=True, default=0)
+    link = models.CharField(blank=True, max_length=150)
     ticker = models.CharField(max_length=10)
+    price = models.FloatField(blank=True, default=0)
     company_fk = models.ForeignKey(Company, on_delete=models.CASCADE, unique=False)
 
     def __str__(self):
         return self.name
+
+    def update_price(self):
+        df = yf.download(self.ticker, period="1d")
+        if df.size > 0:
+            self.price = round(df.tail(1)['Close'].values[0], 2)
+            self.save()
+            return self.price
 
     def get_current_force(self):
         return current_force(self.company_fk)

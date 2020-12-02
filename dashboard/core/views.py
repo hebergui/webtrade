@@ -92,8 +92,13 @@ class StockView(LoginRequiredMixin, View):
     template = 'stock/index.html'
     json = {}
 
-    def get(self, request):
+    def get(self, request, refresh=None):
         stocks = Stock.objects.all()
+
+        if refresh is not None:
+            for s in stocks:
+                s.update_price()
+
         self.json = {'stocks': stocks}
 
         return render(request, self.template, self.json)
@@ -101,7 +106,7 @@ class StockView(LoginRequiredMixin, View):
 
 class StockCreate(LoginRequiredMixin, CreateView):
     model = Stock
-    fields = ('name', 'company_fk', 'option', 'pru', 'target', 'stop', 'ticker', 'link')
+    fields = ('name', 'company_fk', 'option', 'pru', 'target', 'stop', 'ticker', 'link', 'price')
     template_name = 'stock/form.html'
     success_url = '/stock/'
 

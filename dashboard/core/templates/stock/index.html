@@ -15,11 +15,11 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Option</th>
+              <th>Opt</th>
               <th>PRU</th>
+              <th>Price</th>
               <th>Target</th>
               <th>Stop</th>
-              <th>Price</th>
               <th>P/L</th>
               <th>Phase</th>
               <th>Wst</th>
@@ -30,11 +30,11 @@
           <tfoot>
             <tr>
               <th>Name</th>
-              <th>Option</th>
+              <th>Opt</th>
               <th>PRU</th>
+              <th>Price</th>
               <th>Target</th>
               <th>Stop</th>
-              <th>Price</th>
               <th>P/L</th>
               <th>Phase</th>
               <th>Wst</th>
@@ -47,22 +47,49 @@
             <tr>
               <td><a href="/graph/company/{{s.company_fk.id}}">{{ s.name }}</a></td>
               <td>{{ s.option }}</td>
-              <td>{{ s.pru }}€</td>
-              <td>{{ s.target }}€</td>
-              <td>{{ s.stop }}€</td>
-              <td>{{ s.ticker|get_price }}€</td>
-              <td>{{ s.ticker|get_pl:s.pru }}%</td>
-              <td>{{ s.get_current_phase }}</td>
-              <td>{{ s.get_weinstein }}</td>
-              <td><a href="{{s.link}}" target="_blank">link</a></td>
               <td>
-                  <button onClick="location.href='/stock/{{s.pk}}'" type="button" class="btn btn-primary">edit</button>
-                  <button onClick="location.href='/stock/{{s.pk}}/delete'" type="button" class="btn btn-danger">delete</button>
+                <p class="font-weight-bold">{{ s.pru }}€</p>
+              </td>
+              <td>{{ s.price }}€</td>
+              <td>
+                {% if s.target > 0 and s.price > s.target %}
+                  <p class="text-light bg-success">{{ s.target }}€</p>
+                {% elif s.target > 0 %}
+                  <p>{{ s.target }}€</p>
+                {% endif %}
+              </td>
+              <td>
+                {% if s.stop > 0 and s.price < s.stop %}
+                  <p class="text-light bg-danger">{{ s.stop }}€</p>
+                {% elif s.stop > 0 %}
+                  <p>{{ s.stop }}€</p>
+                {% endif %}
+              </td>
+              <td>
+                {% with pl=s.pru|get_pl:s.price %}
+                  {% if pl > 0 %}
+                    <p class="text-success">{{ pl }}%</p>
+                  {% else %}
+                    <p class="text-danger">{{ pl }}%</p>
+                  {% endif %}
+                {% endwith %}
+              </td>
+              <td>{{ s.get_current_phase.0 }}</td>
+              <td>{{ s.get_weinstein }}</td>
+              <td>
+                {% if s.link != '/' %}
+                  <a href="{{s.link}}" target="_blank">link</a>
+                {% endif %}
+              </td>
+              <td>
+                  <button onClick="location.href='/stock/{{s.pk}}'" type="button" class="btn-sm btn-primary">edit</button>
+                  <button onClick="location.href='/stock/{{s.pk}}/delete'" type="button" class="btn-sm btn-danger">delete</button>
               </td>
             </tr>
           {% endfor %}
           </tbody>
         </table>
         <button onclick="location.href='/stock/add'" type="submit" class="btn btn-primary">Create</button>
+        <button onclick="location.href='/stock/up'" type="button" class="btn btn-success">Refresh</button>
       </div>
 {% endblock %}

@@ -1,6 +1,5 @@
 import json
 import statistics
-import yfinance as yf
 
 from django import template
 from django.template.defaultfilters import stringfilter
@@ -62,13 +61,5 @@ def index(indexable, i):
 
 
 @register.filter
-def get_price(ticker):
-    df = yf.download(ticker, period="1d")
-    if df.size > 0:
-        return round(df.tail(1)['Close'].values[0], 2)
-
-
-@register.filter
-def get_pl(ticker, pru):
-    price = get_price(ticker)
+def get_pl(pru, price):
     return round(100 * (price - pru) / pru, 2)
