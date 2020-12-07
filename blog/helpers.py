@@ -2,9 +2,9 @@ import httpx
 from lxml import html
 from datetime import date
 
-# API = "http://35.224.98.28:8000"
-# API = "http://0.0.0.0:8000"
-API = "http://futrax.fr:8000"
+
+API = "http://0.0.0.0:8000"
+# API = "http://futrax.fr:8000"
 
 
 def get_companies(url):
@@ -25,10 +25,10 @@ def get_companies(url):
     return companies
 
 
-def get_pk(name):
+def get_pk_and_dates(name):
     r = httpx.get(API + '/get_pk/company/' + name)
     if r.status_code == 200:
-        return r.json().get('pk')
+        return r.json().get('pk'), r.json().get('dates')
     else:
         return None
 
@@ -101,7 +101,7 @@ def download_data(name, indice, ref, url_ref):
         return name, err
 
     # Check if company exists in db
-    pk = get_pk(name)
+    pk, dates = get_pk_and_dates(name)
     if pk is None:
         # Create company
         js = {
@@ -112,7 +112,7 @@ def download_data(name, indice, ref, url_ref):
         }
         r = httpx.post(API + '/api/companies/', json=js)
         if r.status_code == 201:
-            pk = get_pk(name)
+            pk, dates = get_pk_and_dates(name)
         else:
             return name, r.content
 
@@ -120,22 +120,25 @@ def download_data(name, indice, ref, url_ref):
     ok = 0
     # Create all indicators related to company
     for k, v in histo.items():
-        count += 1
         pub_date, force, cmin, cmax, copen, cclose, mm30, phase = v
-        js = {
-            'pub_date': pub_date,
-            'force': force,
-            'cmin': cmin,
-            'cmax': cmax,
-            'copen': copen,
-            'cclose': cclose,
-            'mm30': mm30,
-            'phase': phase,
-            'company': pk
-        }
-        # Send to api
-        r = httpx.post(API + '/api/indicators/', json=js)
-        if r.status_code == 201:
-            ok += 1
+        # Create only if not already created
+        if pub_date not in dates:
+            count += 1
+            js = {
+                'pub_date': pub_date,
+                'force': force,
+                'cmin': cmin,
+                'cmax': cmax,
+                'copen': copen,
+                'cclose': cclose,
+                'mm30': mm30,
+                'phase': phase,
+                'company_fk': pk
+            }
+            # Send to api
+            r = httpx.post(API + '/api/indicators/', json=js)
+            if r.status_code == 201:
+                ok += 1
+
 
     return name, '{}/{}'.format(ok, count)

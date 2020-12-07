@@ -155,13 +155,17 @@ class EmployeeDelete(LoginRequiredMixin, DeleteView):
 
 
 def get_pk(request, clazz=None, name=None):
-    json = {'pk': None}
+    json = {'pk': None, 'dates': []}
 
     if clazz == 'company' and name is not None:
         # Decode escaped characters in URL
         name = urllib.parse.unquote(name)
         company = Company.objects.filter(name=name).first()
         if company:
-            json = {'pk': company.pk}
+            dates = Indicator.objects.filter(company_fk=company.pk).values_list('pub_date', flat=True)
+            json = {
+                'pk': company.pk,
+                'dates': list(dates)
+            }
 
     return JsonResponse(json, safe=False)
