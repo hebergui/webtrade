@@ -1,10 +1,12 @@
 import httpx
 from lxml import html
 from datetime import date
+import os
 
-
-API = "http://0.0.0.0:8000"
-# API = "http://futrax.fr:8000"
+API = "http://futrax.fr:8000"
+# Override production variables if DJANGO_DEVELOPMENT env variable is set
+if os.environ.get('DJANGO_DEVELOPMENT'):
+    API = "http://0.0.0.0:8000"
 
 
 def get_companies(url):
