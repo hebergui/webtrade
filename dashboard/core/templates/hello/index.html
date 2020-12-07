@@ -2,10 +2,18 @@
 
 {% block links %}
   <!-- Demo script/style for this page -->
-{% endblock %}
+{% endblock links %}
 
 {% load core_extras %}
 
-{% block container %}
+{% block active_header %}
+  <a href="{% url 'hello' %}">Hello</a>
+{% endblock active_header %}
+{% block active_footer %}
+  Hello
+{% endblock active_footer %}
+
+{% block active_container %}
     Hello clazz = {{ clazz }} and oid = {{ oid }}
-{% endblock %}
+{% endblock active_container %}
+

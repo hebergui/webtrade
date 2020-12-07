@@ -3,11 +3,18 @@
 {% block links %}
     <!-- Demo script/style for this page -->
     <script src="/static/js/graph-demo.js"></script>
-{% endblock %}
+{% endblock links %}
 
 {% load core_extras %}
 
-{% block container %}
+{% block active_header %}
+  <a href="{% url 'graph' %}">Graph</a>
+{% endblock active_header %}
+{% block active_footer %}
+  Graph
+{% endblock active_footer %}
+
+{% block active_container %}
     <!-- Django Var -->
     <script>
         var data4stocks = JSON.parse('{{ data4stocks|js }}')
@@ -30,4 +37,4 @@
         </div>
     </div>
 
-{% endblock %}
+{% endblock active_container %}

@@ -2,10 +2,17 @@
 
 {% block links %}
   <!-- Demo script/style for this page -->
-{% endblock %}
+{% endblock links %}
 
 {% load core_extras %}
 {% load crispy_forms_tags %}
+
+{% block active_header %}
+  <a href="{% url 'employee' %}">Employee</a>
+{% endblock active_header %}
+{% block active_footer %}
+  Employee
+{% endblock active_footer %}
 
 {% block container %}
     <h2>Employee Creation / Edition</h2>
@@ -15,4 +22,4 @@
         <button onClick="javascript:history.go(-1);" type="button" class="btn btn-light">Back</button>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
-{% endblock %}
+{% endblock active_container %}

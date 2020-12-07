@@ -2,12 +2,19 @@
 
 {% block links %}
   <!-- Demo script/style for this page -->
-{% endblock %}
+{% endblock links %}
 
 {% load core_extras %}
 {% load crispy_forms_tags %}
 
-{% block container %}
+{% block active_header %}
+  <a href="{% url 'employee' %}">Employee</a>
+{% endblock active_header %}
+{% block active_footer %}
+  Employee
+{% endblock active_footer %}
+
+{% block active_container %}
     <!-- Table -->
       <div class="table-responsive">
         <table class="table table-bordered" id="employeeTable" width="100%" cellspacing="0">
@@ -53,4 +60,4 @@
         </table>
         <button onclick="location.href='/employee/add'" type="submit" class="btn btn-primary">Create</button>
       </div>
-{% endblock %}
+{% endblock active_container %}

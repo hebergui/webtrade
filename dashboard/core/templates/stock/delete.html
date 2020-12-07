@@ -2,12 +2,19 @@
 
 {% block links %}
   <!-- Demo script/style for this page -->
-{% endblock %}
+{% endblock links %}
 
 {% load core_extras %}
 {% load crispy_forms_tags %}
 
-{% block container %}
+{% block active_header %}
+  <a href="{% url 'stock' %}">Stock</a>
+{% endblock active_header %}
+{% block active_footer %}
+  Stock
+{% endblock active_footer %}
+
+{% block active_container %}
     <h2>Stock Deletion</h2>
     <form method="POST" class="form">
         {% csrf_token %}
@@ -17,4 +24,4 @@
         <button onClick="javascript:history.go(-1);" type="button" class="btn btn-light">Back</button>
         <button type="submit" class="btn btn-danger">Delete</button>
     </form>
-{% endblock %}
+{% endblock active_container %}

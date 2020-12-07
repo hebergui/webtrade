@@ -3,12 +3,19 @@
 {% block links %}
   <!-- Demo script/style for this page -->
   <script src="/static/js/stock-demo.js"></script>
-{% endblock %}
+{% endblock links %}
 
 {% load core_extras %}
 {% load crispy_forms_tags %}
 
-{% block container %}
+{% block active_header %}
+  <a href="{% url 'stock' %}">Watchlist</a>
+{% endblock active_header %}
+{% block active_footer %}
+  Watchlist
+{% endblock active_footer %}
+
+{% block active_container %}
     <!-- Table -->
       <div class="table-responsive">
         <table class="table table-bordered" id="stockTable" width="100%" cellspacing="0">
@@ -92,4 +99,4 @@
         <button onclick="location.href='/stock/add'" type="submit" class="btn btn-primary">Create</button>
         <button onclick="location.href='/stock/up'" type="button" class="btn btn-success">Refresh</button>
       </div>
-{% endblock %}
+{% endblock active_container %}
