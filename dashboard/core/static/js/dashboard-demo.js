@@ -21,7 +21,9 @@ $.fn.dataTable.ext.search.push(
 
 // Call the dataTables jQuery plugin
 $(document).ready(function() {
-    var table = $('#dataTable').DataTable();
+    var table = $('#dataTable').DataTable({
+        "iDisplayLength": 25
+    });
     // Event listener to the two range filtering inputs to redraw on input
     $('#filter_by_indice, #filter_by_sector, #filter_by_phase').change( function() {
         table.draw();

@@ -38,29 +38,29 @@
     <div id="wrapper">
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav toggled">
-        <li class="nav-item active">
-          <a class="nav-link" href="/dashboard">
+        <li class="nav-item {% if 'dashboard' in request.path %} active {% endif %}">
+          <a class="nav-link" href="{% url 'dashboard' %}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/graph">
+        <li class="nav-item {% if 'graph' in request.path %} active {% endif %}">
+          <a class="nav-link" href="{% url 'graph' %}">
             <i class="fas fa-fw fa-chart-line"></i>
             <span>Graph</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/stock">
+        <li class="nav-item {% if 'stock' in request.path %} active {% endif %}">
+          <a class="nav-link" href="{% url 'stock' %}">
             <i class="fas fa-fw fa-bell"></i>
             <span>Watchlist</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/employee">
+        <li class="nav-item {% if 'employee' in request.path %} active {% endif %}">
+          <a class="nav-link" href="{% url 'employee' %}">
             <i class="fas fa-fw fa-user"></i>
             <span>Employee</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/hello">
+        <li class="nav-item {% if 'hello' in request.path %} active {% endif %}">
+          <a class="nav-link" href="{% url 'hello' %}">
             <i class="fas fa-fw fa-paragraph"></i>
             <span>Hello</span></a>
         </li>
@@ -69,20 +69,18 @@
       <div id="content-wrapper">
         <!-- /.container-fluid -->
         <div class="container-fluid">
-          <div class="card mb-3">
-            <div class="card-header">
-                {% block active_header %}
-                {% endblock active_header %}
-            </div>
-            <div class="card-body">
-              {% block active_container %}
-              {% endblock active_container %}
-            </div>
-            <div class="card-footer small text-muted">
-                {% block active_footer %}
-                {% endblock active_footer %}
-            </div>
-          </div>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              {% block breadcrumb %}
+              {% endblock breadcrumb %}
+            </li>
+            <li class="breadcrumb-item active">
+              {% block active_breadcrumb %}
+              {% endblock active_breadcrumb %}
+            </li>
+          </ol>
+          {% block active_container %}
+          {% endblock active_container %}
         </div>
 
         <!-- Sticky Footer -->

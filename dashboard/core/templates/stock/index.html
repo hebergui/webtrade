@@ -8,17 +8,17 @@
 {% load core_extras %}
 {% load crispy_forms_tags %}
 
-{% block active_header %}
+{% block breadcrumb %}
   <a href="{% url 'stock' %}">Watchlist</a>
-{% endblock active_header %}
-{% block active_footer %}
-  Watchlist
-{% endblock active_footer %}
+{% endblock breadcrumb %}
+{% block active_breadcrumb %}
+  Overview
+{% endblock active_breadcrumb %}
 
 {% block active_container %}
     <!-- Table -->
       <div class="table-responsive">
-        <table class="table table-bordered" id="stockTable" width="100%" cellspacing="0">
+        <table id="stockTable" class="table-striped display compact" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Name</th>

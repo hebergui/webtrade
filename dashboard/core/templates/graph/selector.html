@@ -6,12 +6,12 @@
 
 {% load core_extras %}
 
-{% block active_header %}
+{% block breadcrumb %}
   <a href="{% url 'graph' %}">Graph</a>
-{% endblock active_header %}
-{% block active_footer %}
-  Graph
-{% endblock active_footer %}
+{% endblock breadcrumb %}
+{% block active_breadcrumb %}
+  Selection
+{% endblock active_breadcrumb %}
 
 {% block active_container %}
     <script>

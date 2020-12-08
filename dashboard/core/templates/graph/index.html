@@ -7,12 +7,12 @@
 
 {% load core_extras %}
 
-{% block active_header %}
+{% block breadcrumb %}
   <a href="{% url 'graph' %}">Graph</a>
-{% endblock active_header %}
-{% block active_footer %}
-  Graph
-{% endblock active_footer %}
+{% endblock breadcrumb %}
+{% block active_breadcrumb %}
+  Overview
+{% endblock active_breadcrumb %}
 
 {% block active_container %}
     <!-- Django Var -->
@@ -20,21 +20,7 @@
         var data4stocks = JSON.parse('{{ data4stocks|js }}')
     </script>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-table"></i>
-                    {{ company.name }}
-                </div>
-                <div class="card-body">
-                    <div id="chart_stocks_div" style="height: 500px; width: 100%;"></div>
-                </div>
-                <div class="card-footer small text-muted">
-                    Candlesticks with Google Chart
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="chart_stocks_div" style="height: 500px; width: 100%;"></div>
+
 
 {% endblock active_container %}

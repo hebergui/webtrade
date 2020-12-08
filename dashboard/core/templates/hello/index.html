@@ -6,14 +6,25 @@
 
 {% load core_extras %}
 
-{% block active_header %}
+{% block breadcrumb %}
   <a href="{% url 'hello' %}">Hello</a>
-{% endblock active_header %}
-{% block active_footer %}
-  Hello
-{% endblock active_footer %}
+{% endblock breadcrumb %}
+{% block active_breadcrumb %}
+  Overview
+{% endblock active_breadcrumb %}
 
 {% block active_container %}
-    Hello clazz = {{ clazz }} and oid = {{ oid }}
+    <div class="container-fluid">
+      <div class="card mb-3">
+        <div class="card-header">
+            Header
+        </div>
+        <div class="card-body">
+            Hello clazz = {{ clazz }} and oid = {{ oid }}
+        </div>
+        <div class="card-footer small text-muted">
+            Footer
+        </div>
+      </div>
+    </div>
 {% endblock active_container %}
-

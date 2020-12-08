@@ -7,12 +7,12 @@
 {% load core_extras %}
 {% load crispy_forms_tags %}
 
-{% block active_header %}
+{% block breadcrumb %}
   <a href="{% url 'stock' %}">Stock</a>
-{% endblock active_header %}
-{% block active_footer %}
-  Stock
-{% endblock active_footer %}
+{% endblock breadcrumb %}
+{% block active_breadcrumb %}
+  Form
+{% endblock active_breadcrumb %}
 
 {% block container %}
     <h2>Stock Creation / Edition</h2>

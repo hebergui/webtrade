@@ -7,12 +7,12 @@
 
 {% load core_extras %}
 
-{% block active_header %}
+{% block breadcrumb %}
   <a href="{% url 'dashboard' %}">Dashboard</a>
-{% endblock active_header %}
-{% block active_footer %}
-  Dashboard
-{% endblock active_footer %}
+{% endblock breadcrumb %}
+{% block active_breadcrumb %}
+  Overview
+{% endblock active_breadcrumb %}
 
 {% block active_container %}
   <!-- Filters -->
@@ -45,7 +45,7 @@
         <select class="form-control form-control-sm" id="filter_by_phase" name="phase">
           <option> </option>
           {% for p in phases %}
-            <option> {{ p }} </option>
+            <option> {{ p.0 }} </option>
           {% endfor %}
         </select>
       </div>
@@ -54,7 +54,7 @@
 
   <!-- Table -->
   <div class="table-responsive">
-    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <table id="dataTable" class="table-striped display compact" width="100%" cellspacing="0">
       <thead>
         <tr>
           <th>Name</th>
@@ -82,7 +82,7 @@
           <td>{{ e.indice }}</td>
           <td>{{ e.sector }}</td>
           <td>{{ e.get_current_force }}</td>
-          <td>{{ e.get_current_phase }}</td>
+          <td>{{ e.get_current_phase.0 }}</td>
           <td>{{ e.get_weinstein }}</td>
         </tr>
       {% endfor %}

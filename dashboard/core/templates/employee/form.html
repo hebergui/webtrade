@@ -7,12 +7,12 @@
 {% load core_extras %}
 {% load crispy_forms_tags %}
 
-{% block active_header %}
+{% block breadcrumb %}
   <a href="{% url 'employee' %}">Employee</a>
-{% endblock active_header %}
-{% block active_footer %}
-  Employee
-{% endblock active_footer %}
+{% endblock breadcrumb %}
+{% block active_breadcrumb %}
+  Form
+{% endblock active_breadcrumb %}
 
 {% block container %}
     <h2>Employee Creation / Edition</h2>
