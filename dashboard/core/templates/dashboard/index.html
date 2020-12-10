@@ -78,7 +78,7 @@
       <tbody>
       {% for e in companies %}
         <tr>
-          <td><a href="/graph/company/{{e.id}}">{{ e.name }}</a></td>
+          <td><a href="/graph/company/{{e.id}}" title="{{ e.name }}">{{ e.fullname }}</a></td>
           <td>{{ e.indice }}</td>
           <td>{{ e.sector }}</td>
           <td>{{ e.get_current_force }}</td>

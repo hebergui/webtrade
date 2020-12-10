@@ -36,7 +36,7 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         # fields = '__all__'
-        fields = ['url', 'name', 'ref', 'indice', 'sector']
+        fields = ['url', 'name', 'fullname', 'ref', 'indice', 'sector']
 
     def create(self, validated_data):
         # company creation only if not already exist

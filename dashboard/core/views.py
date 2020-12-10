@@ -59,6 +59,16 @@ class Hello(LoginRequiredMixin, View):
         return render(request, self.template, self.json)
 
 
+class Scraper(LoginRequiredMixin, View):
+    template = 'scraper/index.html'
+    json = {}
+
+    def get(self, request, room_name='scraper'):
+        self.json = {'room_name': room_name}
+
+        return render(request, self.template, self.json)
+
+
 class Graph(LoginRequiredMixin, View):
     template = 'graph/index.html'
     json = {}
@@ -154,7 +164,7 @@ class EmployeeDelete(LoginRequiredMixin, DeleteView):
     success_url = '/employee/'
 
 
-def get_pk(request, clazz=None, name=None):
+def get_pk(clazz=None, name=None):
     json = {'pk': None, 'dates': []}
 
     if clazz == 'company' and name is not None:

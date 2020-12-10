@@ -1,0 +1,63 @@
+{% extends "../board.html" %}
+
+{% block links %}
+  <!-- Demo script/style for this page -->
+{% endblock links %}
+
+{% load core_extras %}
+
+{% block breadcrumb %}
+  <a href="{% url 'scraper' %}">Scraper</a>
+{% endblock breadcrumb %}
+{% block active_breadcrumb %}
+  Overview
+{% endblock active_breadcrumb %}
+
+{% block active_container %}
+    <div class="container-fluid">
+      <div class="card mb-3">
+        <div class="card-header">
+            Debug
+        </div>
+        <div class="card-body">
+            <textarea id="live-log" rows="10" style="width: 100%; max-width: 100%;" ></textarea>
+            <br/>
+            <input id="live-message-stop" type="button" value="Stop" class="btn-sm btn-danger">
+            <input id="live-message-submit" type="button" value="Run" class="btn-sm btn-primary">
+            {{ room_name|json_script:"room-name" }}
+            <script>
+                const roomName = 'debug';
+
+                const liveSocket = new WebSocket(
+                    'ws://'
+                    + window.location.host
+                    + '/ws/live/'
+                    + roomName
+                    + '/'
+                );
+
+                liveSocket.onmessage = function(e) {
+                    const data = JSON.parse(e.data);
+                    document.querySelector('#live-log').value += (data.message + '\n');
+                };
+
+                liveSocket.onclose = function(e) {
+                    console.error('live socket closed unexpectedly');
+                };
+
+                document.querySelector('#live-message-submit').onclick = function(e) {
+                    const messageInputDom = document.querySelector('#live-message-input');
+                    const message = messageInputDom.value;
+                    liveSocket.send(JSON.stringify({
+                        'message': message
+                    }));
+                    messageInputDom.value = '';
+                };
+            </script>
+        </div>
+        <div class="card-footer small text-muted">
+            Debug
+        </div>
+      </div>
+    </div>
+{% endblock active_container %}

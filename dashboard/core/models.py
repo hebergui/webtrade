@@ -23,6 +23,7 @@ class Employee(BaseModel):
 
 class Company(BaseModel):
     name = models.CharField(max_length=50)
+    fullname = models.CharField(max_length=100)
     ref = models.CharField(max_length=50)
     indice = models.CharField(max_length=50)
     sector = models.CharField(max_length=150)

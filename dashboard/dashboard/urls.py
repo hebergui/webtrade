@@ -5,11 +5,9 @@ from core.views import *
 
 urlpatterns = [
     path('', Dashboard.as_view(), name='dashboard'),
-    path('admin/', admin.site.urls),
+    path('dashboard/', Dashboard.as_view(), name='dashboard'),
 
     path('login/', Login.as_view(), name='login'),
-
-    path('dashboard/', Dashboard.as_view(), name='dashboard'),
 
     path('hello/', Hello.as_view(), name='hello'),
     path('hello/<str:clazz>/<int:oid>', Hello.as_view(), name='hello'),
@@ -30,6 +28,10 @@ urlpatterns = [
 
     path('get_pk/<str:clazz>/<str:name>/', get_pk, name='get_pk'),
 
-    path('api/', include('api.urls')),
+    path('scraper/', Scraper.as_view(), name='scraper'),
+
+    path('admin/', admin.site.urls, name='admin'),
+    path('api/', include('api.urls'), name='api'),
+    path('live/', include('live.urls'), name='live'),
 ]
 
