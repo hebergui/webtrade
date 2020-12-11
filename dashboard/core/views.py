@@ -105,9 +105,24 @@ class StockView(LoginRequiredMixin, View):
     def get(self, request, refresh=None):
         stocks = Stock.objects.all()
 
-        if refresh is not None:
+        if refresh == "refresh":
             for s in stocks:
                 s.update_price()
+
+        self.json = {'stocks': stocks}
+
+        return render(request, self.template, self.json)
+
+
+class StockRefresh(LoginRequiredMixin, View):
+    template = 'stock/index.html'
+    json = {}
+
+    def get(self, request):
+        stocks = Stock.objects.all()
+
+        for s in stocks:
+            s.update_price()
 
         self.json = {'stocks': stocks}
 
