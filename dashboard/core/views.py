@@ -179,7 +179,7 @@ class EmployeeDelete(LoginRequiredMixin, DeleteView):
     success_url = '/employee/'
 
 
-def get_pk(clazz=None, name=None):
+def get_pk(request, clazz=None, name=None):
     json = {'pk': None, 'dates': []}
 
     if clazz == 'company' and name is not None:

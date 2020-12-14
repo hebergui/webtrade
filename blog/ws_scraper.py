@@ -1,6 +1,9 @@
 import logging
+import threading
 import time
 import httpx
+import websocket
+import json
 import os
 
 from lxml import html
@@ -20,6 +23,72 @@ WS_URL = "ws://{}:{}/ws/live/debug/".format(SERVER_IP, SERVER_PORT)
 BLOG_URL = 'https://screener.blogbourse.net/societes.html'
 BLOG_URL_REF = "https://screener.blogbourse.net/"
 
+
+class LogSenderThread(threading.Thread):
+    def __init__(self, group=None, target=None, name='Producer',
+                 args=(), kwargs=None, verbose=None, queue=None, uri=None):
+        super(LogSenderThread, self).__init__()
+        self.name = name
+        self.uri = uri
+        self.queue = queue
+        #self.ws = websocket.WebSocketApp(self.uri)
+        #self.wst = threading.Thread(target=self.ws.run_forever)
+        #self.wst.daemon = True
+
+    def run(self):
+        self.wst.start()
+        while True:
+            time.sleep(0.01)
+            item = self.queue.get()
+
+            if item is None:
+                self.ws.close()
+                self.ws.keep_running = False
+                self.wst.join()
+                return
+            else:
+                self.ws.send(item)
+                self.queue.task_done()
+
+
+class MyLogger(logging.Logger):
+    def __init__(self, name, level=logging.NOTSET):
+        super(MyLogger, self).__init__(name, level)
+        #self.queue = Queue()
+        #self.lst = LogSenderThread(name='LogSender', queue=self.queue, uri=WS_URL)
+        #self.lst.start()
+
+    def stop(self):
+        #self.queue.put(None)
+        pass
+
+    def add_to_queue(self, msg):
+        #js = {'message': msg}
+        #self.queue.put(json.dumps(js))
+        pass
+
+    def info(self, msg, *args, **kwargs):
+        #self.add_to_queue(msg)
+        super(MyLogger, self).info(msg, *args, **kwargs)
+
+    def debug(self, msg, *args, **kwargs):
+        #self.add_to_queue(msg)
+        super(MyLogger, self).debug(msg, *args, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        #self.add_to_queue(msg)
+        super(MyLogger, self).warning(msg, *args, **kwargs)
+
+    def critical(self, msg, *args, **kwargs):
+        #self.add_to_queue(msg)
+        super(MyLogger, self).critical(msg, *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        #self.add_to_queue(msg)
+        super(MyLogger, self).error(msg, *args, **kwargs)
+
+
+#logging.setLoggerClass(MyLogger)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -256,6 +325,7 @@ def scrape():
     queue.join()
     logger.info('Took %s', time.time() - ts)
 
+    logger.stop()
 
 if __name__ == '__main__':
     scrape()
