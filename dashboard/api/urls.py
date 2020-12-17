@@ -9,6 +9,7 @@ router.register(r'employees', views.EmployeeViewSet)
 router.register(r'companies', views.CompanyViewSet)
 router.register(r'indicators', views.IndicatorViewSet)
 router.register(r'companies', views.CompanyViewSet)
+router.register(r'tickers', views.TickerViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

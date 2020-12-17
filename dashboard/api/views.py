@@ -4,6 +4,11 @@ from core.models import *
 from .serializers import *
 
 
+class TickerViewSet(viewsets.ModelViewSet):
+    queryset = Ticker.objects.all()
+    serializer_class = TickerSerializer
+
+
 class StockViewSet(viewsets.ModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockSerializer

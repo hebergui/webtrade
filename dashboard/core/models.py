@@ -139,3 +139,14 @@ def weinstein(company_id):
         return f'{i} weeks'
 
     return "wait"
+
+
+class Ticker(BaseModel):
+    name = models.CharField(max_length=50)
+    zb = models.CharField(max_length=25, blank=True, default=None)
+    yf = models.CharField(max_length=25, blank=True, default=None)
+    inv = models.CharField(max_length=25, blank=True, default=None)
+    company_fk = models.ForeignKey(Company, on_delete=models.CASCADE, unique=False)
+
+    def __str__(self):
+        return self.name
