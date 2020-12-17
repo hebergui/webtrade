@@ -32,6 +32,7 @@ class Login(View):
 
 class Index(LoginRequiredMixin, View):
     template = 'index/index.html'
+    login_url = '/login/'
     json = {}
 
     def get(self, request, clazz=None, oid=None):
@@ -59,6 +60,7 @@ class Dashboard(LoginRequiredMixin, View):
 
 class Hello(LoginRequiredMixin, View):
     template = 'hello/index.html'
+    login_url = '/login/' 
     json = {}
 
     def get(self, request, clazz=None, oid=None):
@@ -79,6 +81,7 @@ class Scraper(LoginRequiredMixin, View):
 
 class Graph(LoginRequiredMixin, View):
     template = 'graph/index.html'
+    login_url = '/login/' 
     json = {}
 
     def get(self, request, clazz=None, oid=None):
