@@ -74,7 +74,6 @@ class Stock(BaseModel):
     target = models.FloatField(blank=True, default=0)
     stop = models.FloatField(blank=True, default=0)
     link = models.CharField(blank=True, max_length=150)
-    ticker = models.CharField(max_length=10)
     price = models.FloatField(blank=True, default=0)
     company_fk = models.ForeignKey(Company, on_delete=models.CASCADE, unique=False)
 
@@ -82,7 +81,8 @@ class Stock(BaseModel):
         return self.name
 
     def update_price(self):
-        df = yf.download(self.ticker, period="1d")
+        ticker = Ticker.objects.filter(company_fk=self.company_fk.pk).first()
+        df = yf.download(ticker.yf, period="1d")
         if df.size > 0:
             self.price = round(df.tail(1)['Close'].values[0], 2)
             self.save()

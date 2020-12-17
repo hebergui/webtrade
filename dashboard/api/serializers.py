@@ -14,7 +14,7 @@ class TickerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticker
         # fields = '__all__'
-        fields = ['url', 'name', 'zb', 'yf', 'inv']
+        fields = ['url', 'name', 'zb', 'yf', 'inv', 'company_fk']
 
 
 class StockSerializer(serializers.ModelSerializer):

@@ -30,6 +30,14 @@ class Login(View):
             return render(request, self.template, {'form': form})
 
 
+class Index(LoginRequiredMixin, View):
+    template = 'index/index.html'
+    json = {}
+
+    def get(self, request, clazz=None, oid=None):
+        return render(request, self.template, self.json)
+
+
 class Dashboard(LoginRequiredMixin, View):
     template = 'dashboard/index.html'
     login_url = '/login/'
@@ -131,14 +139,14 @@ class StockRefresh(LoginRequiredMixin, View):
 
 class StockCreate(LoginRequiredMixin, CreateView):
     model = Stock
-    fields = ('name', 'company_fk', 'option', 'pru', 'target', 'stop', 'ticker', 'link', 'price')
+    fields = ('name', 'company_fk', 'option', 'pru', 'target', 'stop', 'link', 'price')
     template_name = 'stock/form.html'
     success_url = '/stock/'
 
 
 class StockUpdate(LoginRequiredMixin, UpdateView):
     model = Stock
-    fields = ('name', 'pru', 'target', 'stop', 'ticker', 'link')
+    fields = ('name', 'pru', 'target', 'stop', 'link')
     template_name = 'stock/form.html'
     success_url = '/stock/'
 
@@ -186,6 +194,7 @@ def get_pk(request, clazz=None, name=None):
         # Decode escaped characters in URL
         name = urllib.parse.unquote(name)
         company = Company.objects.filter(name=name).first()
+        ticker = Ticker()
         if company:
             dates = Indicator.objects.filter(company_fk=company.pk).values_list('pub_date', flat=True)
             json = {
