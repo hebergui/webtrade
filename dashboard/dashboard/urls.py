@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from core.views import *
 #from ..core.views import *
+
 urlpatterns = [
     path('', Index.as_view(), name='index'),
 
@@ -34,6 +35,9 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('api/', include('api.urls'), name='api'),
     path('live/', include('live.urls'), name='live'),
+
+    path("async/", async_view),
+    path("sync/", sync_view),
 ]
 
 

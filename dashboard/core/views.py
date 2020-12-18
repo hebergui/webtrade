@@ -1,11 +1,14 @@
+import asyncio
+import httpx
+import urllib.parse
+from time import sleep
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.base import View
-import urllib.parse
 
 from .models import *
 from .forms import *
@@ -54,6 +57,7 @@ class Dashboard(LoginRequiredMixin, View):
             'sectors': sectors,
             'indices': indices,
             'phases': phases,
+            'last_update': last_update(),
         }
         return render(request, self.template, json)
 
@@ -206,3 +210,35 @@ def get_pk(request, clazz=None, name=None):
             }
 
     return JsonResponse(json, safe=False)
+
+
+async def async_view(request):
+    loop = asyncio.get_event_loop()
+    loop.create_task(http_call_async())
+    return HttpResponse("Non-blocking HTTP request")
+
+
+def sync_view(request):
+    http_call_sync()
+    return HttpResponse("Blocking HTTP request")
+
+
+def last_update():
+    return Indicator.objects.last().pub_date
+
+
+async def http_call_async():
+    for num in range(1, 6):
+        await asyncio.sleep(1)
+        print(num)
+    async with httpx.AsyncClient() as client:
+        r = await client.get("https://httpbin.org/")
+        print(r)
+
+
+def http_call_sync():
+    for num in range(1, 6):
+        sleep(1)
+        print(num)
+    r = httpx.get("https://httpbin.org/")
+    print(r)

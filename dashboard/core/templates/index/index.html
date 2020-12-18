@@ -2,6 +2,7 @@
 
 {% block links %}
   <!-- Demo script/style for this page -->
+    <script src="/static/js/index-demo.js"></script>
 {% endblock links %}
 
 {% load core_extras %}
@@ -21,6 +22,12 @@
         </div>
         <div class="card-body">
             <- Click to navigate
+            Test :
+            <div id="progress-wrapper">
+              <button id="progress-bar-trigger">Run</button>
+              <div id="progress-bar" style="background-color: blue; width: 0%;">&nbsp;</div>
+              <div id="progress-bar-message">Waiting for progress to start...</div>
+            </div>
         </div>
         <div class="card-footer small text-muted">
             Footer
