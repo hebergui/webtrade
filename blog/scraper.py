@@ -180,9 +180,10 @@ def get_company_data(company):
             phase = tmp.split(' : ')[1].split(' (')[0]
 
         # Phase written should be for last_pubdate=current_pubdat
-        last_pubdate = list(indicators.keys())[-1]
-        indicator = indicators[last_pubdate]
-        indicator.add_phase(phase)
+        if len(indicators) > 0:
+            last_pubdate = list(indicators.keys())[-1]
+            indicator = indicators[last_pubdate]
+            indicator.add_phase(phase)
 
     except ValueError as err:
         return company, err
@@ -222,7 +223,8 @@ class DownloadWorker(Thread):
 def scrape():
     ts = time.time()
 
-    companies = get_companies(BLOG_URL)
+    nodata_companies = ['rousselet-centrifugation', 'hopening', 'hexcel', 'datbim', 'rapido-pret', 'toit-pour-toi', 'nationale-propriete-immeubles', 'union-metallurgique-haute-seine', 'financiere-etang-berre', 'corep-lighting', 'consort-nt', 'condor-technologies', 'ag3i', 'firstcaution', 'one-experience', 'grecemar', 'd2l-group', 'gai', 'eavs', 'editions-signe', 'securinfor', 'ardoin-saint-amand', 'groupe-carnivor', 'novatech-industries', 'ids', 'simo-international', 'parfex', 'olmix', 'visio-nerf', 'galeo-concept', 'fonciere-vindi', 'energie-europe-service', 'scemi', 'compagnie-miniere-grecemar', 'easson-telecom', 'multimicrocloud', 'mulann', 'guandao-puer-inves', 'media-lab', 'italy-innovazioni', 'emova-group2', 'saipppp']
+    companies = [c for c in get_companies(BLOG_URL) if c not in nodata_companies]
 
     """
     companies = [Company("Total", "CAC 40", "cours-total.html"),
