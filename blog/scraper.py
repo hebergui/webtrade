@@ -162,14 +162,6 @@ def get_company_data(company):
 
         tree = html.fromstring(txt)
 
-        cur_pubdate = 'N/C'
-        # tmp = tree.xpath('/html/body/div/div/main/div[4]/ul/li[2]/text()')[0]
-        tmp = tree.xpath('/html/body/div/div/main/div[5]/ul/li[2]/text()')[0]
-        if tmp.find('Cours') != -1:
-            cur_pubdate = tmp.split('  au ')[1].split(' : ')[0]
-            # 11/09/2019 to 11/09/19
-            cur_pubdate = cur_pubdate[0:6] + cur_pubdate[-2:]
-
         # sector = tree.xpath('/html/body/div/div/main/div[4]/ul/li[4]/a/text()')
         sector = tree.xpath('/html/body/div/div/main/div[5]/ul/li[4]/a/text()')
         if len(sector) == 0:
@@ -187,9 +179,10 @@ def get_company_data(company):
         if tmp.find('Phase') != -1:
             phase = tmp.split(' : ')[1].split(' (')[0]
 
-        if cur_pubdate in indicators:
-            indicator = indicators[cur_pubdate]
-            indicator.add_phase(phase)
+        # Phase written should be for last_pubdate=current_pubdat
+        last_pubdate = list(indicators.keys())[-1]
+        indicator = indicators[last_pubdate]
+        indicator.add_phase(phase)
 
     except ValueError as err:
         return company, err
@@ -205,6 +198,7 @@ def get_company_data(company):
             r = httpx.post(API_URL + '/api/indicators/', json=indicator.to_json())
             if r.status_code == 201:
                 ok += 1
+
 
     return company, 'OK[{}] - COUNT[{}]'.format(ok, count)
 
@@ -229,6 +223,7 @@ def scrape():
     ts = time.time()
 
     companies = get_companies(BLOG_URL)
+
     """
     companies = [Company("Total", "CAC 40", "cours-total.html"),
             Company("Vallourec", "N/C", "cours-vallourec.html"),
