@@ -8,6 +8,26 @@ from datetime import date
 from queue import Queue
 from threading import Thread
 
+skip_companies = ['whiteni', 'pacte-novation', 'toques-blanches', 'fsdv', 'cta-holding', 'green-energy',
+                        'maison-antoine-baud', 'digitech', 'infoclip', 'toutabo', 'mybest-group', 'onlineformapro',
+                        'rousselet-centrifugation', 'hexcel', 'datbim', 'toit-pour-toi', 'corep-lighting', 'consort-nt',
+                        'condor-technologies', 'ag3i', 'firstcaution', 'one-experience', 'grecemar', 'd2l-group',
+                        'securinfor', 'ardoin-saint-amand', 'groupe-carnivor', 'novatech-industries', 'parfex', 'olmix',
+                        'visio-nerf', 'galeo-concept', 'fonciere-vindi', 'energie-europe-service',
+                        'compagnie-miniere-grecemar', 'easson-telecom', 'mulann', 'guandao-puer-inves', 'media-lab',
+                        'italy-innovazioni', 'emova-group2', 'saipppp', 'bourbon', 'lilly-company', 'vale', 'afone',
+                        'alpha-mos', 'biom-up', 'rougier', 'eurasia-groupe', 'futuren', 'stallergenes-greer', 'cesar',
+                        'groupimo', 'oxatis', 'primecity-investment', 'enensys-technologies', 'assima',
+                        'solutions-30-se', 'traqueur', 'ivalis', 'bourrelier-group', 'ales-groupe', 'harvest',
+                        'velcan-energy', 'millet-innovation', 'medicrea', 'weborama', 'acces-industrie', 'a2micile',
+                        'vexim', 'global-ecopower', 'technofirst', 'oceasoft', 'horizontal-software', 'sorbet-amour',
+                        'hotelim', 'proventure-gold', 'simat', 'metalliance', 'hotel-majestic-cannes', 'atv',
+                        'silkan-rt', 'global-health-group', 'altran', 'ingenico', 'baccarat', 'intexa', 'stentys',
+                        'april', 'sequana', 'blue-solutions', 'ymagis', 'quotium-technologies', 'cellnovo',
+                        'orchestra-premaman', 'mediawan', 'antalis-international', 'financiere-ouest-africain',
+                        'fonciere-verte', 'agta-record', 'brasserie-cameroun', 'lafuma', 'electricite-madagascar',
+                        'siph', 'toupargel', 'gemalto', 'sodifrance', 'medasys', 'spir', 'officiis-properties',
+                        'terreis', 'le-belier', 'its-group', 'recylex', 'mainstay-medical-international']
 
 SERVER_IP = "futrax.fr"
 SERVER_PORT = 8000
@@ -223,17 +243,16 @@ class DownloadWorker(Thread):
 def scrape():
     ts = time.time()
 
-    nodata_companies = ['whiteni', 'pacte-novation', 'toques-blanches', 'fsdv', 'cta-holding', 'green-energy', 'maison-antoine-baud', 'digitech', 'infoclip', 'toutabo', 'mybest-group', 'onlineformapro', 'rousselet-centrifugation', 'hexcel', 'datbim', 'toit-pour-toi', 'corep-lighting', 'consort-nt', 'condor-technologies', 'ag3i', 'firstcaution', 'one-experience', 'grecemar', 'd2l-group', 'securinfor', 'ardoin-saint-amand', 'groupe-carnivor', 'novatech-industries', 'parfex', 'olmix', 'visio-nerf', 'galeo-concept', 'fonciere-vindi', 'energie-europe-service', 'compagnie-miniere-grecemar', 'easson-telecom', 'mulann', 'guandao-puer-inves', 'media-lab', 'italy-innovazioni', 'emova-group2', 'saipppp', 'bourbon', 'lilly-company', 'vale', 'afone', 'alpha-mos', 'biom-up', 'rougier', 'eurasia-groupe', 'futuren', 'stallergenes-greer', 'cesar', 'groupimo', 'oxatis', 'primecity-investment', 'enensys-technologies', 'assima', 'solutions-30-se', 'traqueur', 'ivalis', 'bourrelier-group', 'ales-groupe', 'harvest', 'velcan-energy', 'millet-innovation', 'medicrea', 'weborama', 'acces-industrie', 'a2micile', 'vexim', 'global-ecopower', 'technofirst', 'oceasoft', 'horizontal-software', 'sorbet-amour', 'hotelim', 'proventure-gold', 'simat', 'metalliance', 'hotel-majestic-cannes', 'atv', 'silkan-rt', 'global-health-group', 'altran', 'ingenico', 'baccarat', 'intexa', 'stentys', 'april', 'sequana', 'blue-solutions', 'ymagis', 'quotium-technologies', 'cellnovo', 'orchestra-premaman', 'mediawan', 'antalis-international', 'financiere-ouest-africain', 'fonciere-verte', 'agta-record', 'brasserie-cameroun', 'lafuma', 'electricite-madagascar', 'siph', 'toupargel', 'gemalto', 'sodifrance', 'medasys', 'spir', 'officiis-properties', 'terreis', 'le-belier', 'its-group', 'recylex', 'mainstay-medical-international']
     companies = []
     skip = 0
     for company in get_companies(BLOG_URL):
-        if company.name in nodata_companies:
+        if company.name in skip_companies:
             logger.info('Skip {}'.format(company.name))
             skip += 1
         else:
             companies.append(company)
     
-    logger.info('Companies ({}) / Blacklist ({}) / Skipped ({})'.format(len(companies), skip, len(nodata_companies)))
+    logger.info('Companies ({}) / Blacklist ({}) / Skipped ({})'.format(len(companies), skip, len(skip_companies)))
     """
     companies = [Company("Total", "CAC 40", "cours-total.html"),
             Company("Vallourec", "N/C", "cours-vallourec.html"),

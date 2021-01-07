@@ -201,12 +201,19 @@ def get_pk(request, clazz=None, name=None):
         # Decode escaped characters in URL
         name = urllib.parse.unquote(name)
         company = Company.objects.filter(name=name).first()
-        ticker = Ticker()
         if company:
             dates = Indicator.objects.filter(company_fk=company.pk).values_list('pub_date', flat=True)
             json = {
                 'pk': company.pk,
                 'dates': list(dates)
+            }
+    if clazz == 'ticker' and name is not None:
+        # Decode escaped characters in URL
+        name = urllib.parse.unquote(name)
+        ticker = Ticker.objects.filter(name=name).first()
+        if ticker:
+            json = {
+                'pk': ticker.pk,
             }
 
     return JsonResponse(json, safe=False)
