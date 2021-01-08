@@ -42,7 +42,7 @@ N_NO_UP = 0
 N_NO_200 = 0
 
 
-def extract_data(content, isYahoo=False):
+def extract_data(content, web):
     if content is None:
         return '#', 'N/A'
 
@@ -57,18 +57,22 @@ def extract_data(content, isYahoo=False):
             if len(divs) >= 2:
                 anchor = divs[0].find('a')
                 link = anchor['href']
-                if isYahoo:
+                if web == 'yahoo':
                     title = anchor.find('h3').text
                     title_search = re.search(' \((.*)\) ', title)
-                    if title_search:
+                    if title_search and web in link:
                         quote = title_search.group(1)
                         return link, quote
                     else:
                         limit -= 1
-                        if limit == 0:
-                            break
-                else:
+                elif web in link:
                     return link, 'N/A'
+                else:
+                    limit -= 1
+
+        if limit == 0:
+            break
+
     return '#', 'N/A'
 
 
@@ -151,31 +155,35 @@ class Worker(Thread):
             # Get the work from the queue and expand the tuple
             company_name = self.queue.get()
             try:
-                zb = query_web('zonebourse', company_name)
-                yf = query_web('yahoo-finance', company_name)
-                inv = query_web('investir', company_name)
-
-                zb_link, _ = extract_data(zb)
-                yf_link, yf_quote = extract_data(yf, isYahoo=True)
-                inv_link, _ = extract_data(inv)
-
                 ticker = get_ticker(company_name)
+
                 if ticker is not None:
                     N_TICKERS += 1
                     needUpdate = False
 
-                    if ticker['zb_link'] == '#' and zb_link != '#':
-                        needUpdate = True
-                        ticker['zb_link'] = zb_link
-                    if ticker['yf_link'] == '#' and yf_link != '#':
-                        needUpdate = True
-                        ticker['yf_link'] = yf_link
-                    if ticker['inv_link'] == '#' and inv_link != '#':
-                        needUpdate = True
-                        ticker['inv_link'] = inv_link
-                    if ticker['yf'] == 'N/A' and yf_quote != 'N/A':
-                        needUpdate = True
-                        ticker['yf'] = yf_quote
+                    if ticker['zb_link'] == '#' or 'zonebourse' not in ticker['zb_link']:
+                        zb = query_web('zonebourse', company_name)
+                        zb_link, _ = extract_data(zb, 'zonebourse')
+                        if zb_link != '#' and 'zonebourse' in zb_link:
+                            needUpdate = True
+                            ticker['zb_link'] = zb_link
+
+                    if ticker['yf_link'] == '#' or 'yahoo' not in ticker['yf_link'] or ticker['yf'] == 'N/A':
+                        yf = query_web('yahoo-finance', company_name)
+                        yf_link, yf_quote = extract_data(yf, 'yahoo')
+                        if yf_link != '#' and 'yahoo' in yf_link:
+                            needUpdate = True
+                            ticker['yf_link'] = yf_link
+                        if yf_quote != 'N/A' and ticker['yf'] == 'N/A':
+                            needUpdate = True
+                            ticker['yf'] = yf_quote
+
+                    if ticker['inv_link'] == '#' or 'investir' not in ticker['inv_link']:
+                        inv = query_web('investir-les-echos', company_name)
+                        inv_link, _ = extract_data(inv, 'investir')
+                        if inv_link != '#' and 'investir' in inv_link:
+                            needUpdate = True
+                            ticker['inv_link'] = inv_link
 
                     if needUpdate:
                         status_code = send_to_api(ticker)
