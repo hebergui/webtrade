@@ -22,7 +22,8 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Opt</th>
+              <!--<th>Opt</th>-->
+              <th>Links</th>
               <th>PRU</th>
               <th>Price</th>
               <th>Target</th>
@@ -37,7 +38,8 @@
           <tfoot>
             <tr>
               <th>Name</th>
-              <th>Opt</th>
+              <!--<th>Opt</th>-->
+              <th>Links</th>
               <th>PRU</th>
               <th>Price</th>
               <th>Target</th>
@@ -52,12 +54,23 @@
           <tbody>
           {% for s in stocks %}
             <tr>
-              <td><a href="/graph/company/{{s.company_fk.id}}">{{ s.name }}</a></td>
-              <td>{{ s.option }}</td>
+              <td>
+                <p><a href="/graph/company/{{s.company_fk.id}}">{{ s.name }}</a></p>
+              </td>
+              <!--<td>{{ s.option }}</td>-->
+              <td>
+                <p>
+                  <a href="{{s.get_ticker.zb_link}}">zb</a> /
+                  <a href="{{s.get_ticker.yf_link}}">yf</a> /
+                  <a href="{{s.get_ticker.inv_link}}">inv</a>
+                </p>
+              </td>
               <td>
                 <p class="font-weight-bold">{{ s.pru }}€</p>
               </td>
-              <td>{{ s.price }}€</td>
+              <td>
+                <p> {{ s.price }}€ </p>
+              </td>
               <td>
                 {% if s.target > 0 and s.price > s.target %}
                   <p class="text-light bg-success">{{ s.target }}€</p>
@@ -81,11 +94,15 @@
                   {% endif %}
                 {% endwith %}
               </td>
-              <td>{{ s.get_current_phase.0 }}</td>
-              <td>{{ s.get_weinstein }}</td>
+              <td>
+                <p> {{ s.get_current_phase.0 }} </p>
+              </td>
+              <td>
+                <p> {{ s.get_weinstein }} </p>
+              </td>
               <td>
                 {% if s.link != '/' %}
-                  <a href="{{s.link}}" target="_blank">link</a>
+                <p> <a href="{{s.link}}" target="_blank">link</a> </p>
                 {% endif %}
               </td>
               <td>

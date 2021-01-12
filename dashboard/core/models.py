@@ -40,6 +40,9 @@ class Company(BaseModel):
     def get_weinstein(self):
         return weinstein(self.pk)
 
+    def get_ticker(self):
+        return Ticker.objects.filter(name=self.name).first()
+
 
 class Indicator(BaseModel):
     pub_date = models.CharField(max_length=50)
@@ -96,6 +99,9 @@ class Stock(BaseModel):
 
     def get_weinstein(self):
         return weinstein(self.company_fk)
+
+    def get_ticker(self):
+        return Ticker.objects.filter(company_fk=self.company_fk.pk).first()
 
 
 def current_force(company_id):

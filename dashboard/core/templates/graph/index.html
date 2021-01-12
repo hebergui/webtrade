@@ -19,8 +19,17 @@
     <script>
         var data4stocks = JSON.parse('{{ data4stocks|js }}')
     </script>
-
-    <div id="chart_stocks_div" style="height: 500px; width: 100%;"></div>
-
-
+    <div class="container-fluid">
+      <div class="card mb-3">
+        <div class="card-header">
+            {{company.fullname}}
+        </div>
+        <div class="card-body">
+            <div id="chart_stocks_div" style="height: 500px; width: 100%;"></div>
+        </div>
+        <div class="card-footer small text-muted">
+            {{company.name}}
+        </div>
+      </div>
+    </div>
 {% endblock active_container %}
