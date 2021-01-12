@@ -26,6 +26,49 @@
         </div>
         <div class="card-body">
             <div id="chart_stocks_div" style="height: 500px; width: 100%;"></div>
+
+            <form>
+                <div class="form-group row">
+                    <label for="staticName" class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-10">
+                        <label class="form-control-plaintext" id="staticName"> {{company.fullname}} </label>
+                    </div>
+
+                    <label for="staticIndice" class="col-sm-2 col-form-label">Indice</label>
+                    <div class="col-sm-10">
+                        <label class="form-control-plaintext" id="staticIndice"> {{company.indice}} </label>
+                    </div>
+
+                    <label for="staticSector" class="col-sm-2 col-form-label">Sector</label>
+                    <div class="col-sm-10">
+                        <label class="form-control-plaintext" id="staticSector"> {{company.sector}} </label>
+                    </div>
+
+                    <label for="staticForce" class="col-sm-2 col-form-label">Force</label>
+                    <div class="col-sm-10">
+                        <label class="form-control-plaintext" id="staticForce"> {{company.get_current_force}} </label>
+                    </div>
+
+                    <label for="staticPhase" class="col-sm-2 col-form-label">Phase</label>
+                    <div class="col-sm-10">
+                        <label class="form-control-plaintext" id="staticPhase"> {{company.get_current_phase}} </label>
+                    </div>
+
+                    <label for="staticWeinstein" class="col-sm-2 col-form-label">Weinstein</label>
+                    <div class="col-sm-10">
+                        <label class="form-control-plaintext" id="staticWeinstein"> {{company.get_weinstein}} </label>
+                    </div>
+
+                    <label for="staticLinks" class="col-sm-2 col-form-label">Links</label>
+                    <div class="col-sm-10" id="staticLinks">
+                        <div class="form-control-plaintext">
+                            <a target="blank" href="{{company.get_ticker.zb_link}}"> ZoneBourse </a> /
+                            <a target="blank"  href="{{company.get_ticker.yf_link}}"> Yahoo </a> /
+                            <a target="blank" href="{{company.get_ticker.inv_link}}"> Investir </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="card-footer small text-muted">
             {{company.name}}
