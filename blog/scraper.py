@@ -182,19 +182,33 @@ def get_company_data(company):
 
         tree = html.fromstring(txt)
 
-        # sector = tree.xpath('/html/body/div/div/main/div[4]/ul/li[4]/a/text()')
+        # Code ISIN
+        isin = 'N/A'
+        tmp = tree.xpath('/html/body/div/div/main/div[5]/ul/li[1]/text()')[0]
+        if tmp.find('ISIN') != -1:
+            isin = tmp.split(' : ')[1]
+
+        # Cours
+        # cours = tree.xpath('/html/body/div/div/main/div[5]/ul/li[2]/text()')[0]
+
+        # Indice
+        # indice = tree.xpath('/html/body/div/div/main/div[5]/ul/li[3]/text()')
+        # if len(indice) == 0:
+        #     indice = tree.xpath('/html/body/div/div/main/div[5]/ul/li[3]/em/text()')
+        # indice = indice[0]
+#
+        # Sector
         sector = tree.xpath('/html/body/div/div/main/div[5]/ul/li[4]/a/text()')
         if len(sector) == 0:
-            # sector = tree.xpath('/html/body/div/div/main/div[4]/ul/li[4]/em/text()')
             sector = tree.xpath('/html/body/div/div/main/div[5]/ul/li[4]/em/text()')
         sector = sector[0]
         company.add_sector(sector=sector)
 
+        # Force
         # should be the same in histo
         # force = float(tree.xpath('/html/body/div/div/main/div[4]/ul/li[5]/text()')[0].split(' : ')[1])
 
         phase = 'N/C'
-        # tmp = tree.xpath('/html/body/div/div/main/div[4]/ul/li[6]/text()')[0]
         tmp = tree.xpath('/html/body/div/div/main/div[5]/ul/li[6]/text()')[0]
         if tmp.find('Phase') != -1:
             phase = tmp.split(' : ')[1].split(' (')[0]
@@ -219,7 +233,6 @@ def get_company_data(company):
             r = httpx.post(API_URL + '/api/indicators/', json=indicator.to_json())
             if r.status_code == 201:
                 ok += 1
-
 
     return company, 'OK[{}] - COUNT[{}]'.format(ok, count)
 

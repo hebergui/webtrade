@@ -143,9 +143,8 @@ def weinstein(company_id):
 
 class Ticker(BaseModel):
     name = models.CharField(max_length=50)
-    zb = models.CharField(max_length=25, blank=True, default=None)
     yf = models.CharField(max_length=25, blank=True, default=None)
-    inv = models.CharField(max_length=25, blank=True, default=None)
+    isin = models.CharField(max_length=25, blank=True, default=None)
     zb_link = models.CharField(max_length=150, blank=True, default='#')
     yf_link = models.CharField(max_length=150, blank=True, default='#')
     inv_link = models.CharField(max_length=150, blank=True, default='#')
